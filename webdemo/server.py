@@ -109,15 +109,19 @@ class DemoHandler(BaseHTTPRequestHandler):
                                      f"<table border='1'><tr><th>路由</th><th>用途</th></tr>{analyze_rows}</table>"
                                      "<p>错误体统一为 <code>{\"ok\": false, \"error\": \"...\"}</code>。</p>"
                                      "</body></html>")
-            elif parsed.path in ("/", "/index.html", "/analyze.html", "/story.html"):
+            elif parsed.path in ("/", "/index.html", "/analyze.html", "/story.html",
+                                   "/story-huangdi.html", "/story-david.html"):
                 page = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
-                try:
-                    html = (PROJECT_ROOT / "webdemo" / page).read_text(encoding="utf-8")
-                except OSError:
-                    html = ("<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'>"
-                            "<title>CG Web Demo</title></head><body><h1>CG Web Demo</h1>"
-                            "<p>前端文件缺失。</p></body></html>")
-                self._send_html(200, html)
+                if ".." in page or page.startswith("/"):
+                    self._fail(404, f"unknown path: {parsed.path}")
+                else:
+                    try:
+                        html = (PROJECT_ROOT / "webdemo" / page).read_text(encoding="utf-8")
+                    except OSError:
+                        html = ("<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'>"
+                                "<title>CG Web Demo</title></head><body><h1>CG Web Demo</h1>"
+                                "<p>前端文件缺失。</p></body></html>")
+                    self._send_html(200, html)
             else:
                 if parsed.path.startswith("/api/analyze/"):
                     status, payload = dispatch_analyze(self.demo.analysis_api, self.path, {})

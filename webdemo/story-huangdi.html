@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>故事线：黄帝是层层累加出来的吗 · CG Web Demo</title>
+<style>
+  body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; color: #1c1c1e; line-height: 1.8; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+  .step { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
+  .step h2 { font-size: 16px; margin: 0 0 6px; }
+  .step .go { margin-top: 8px; }
+  button { font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid #1c1c1e; background: #fff; cursor: pointer; }
+  code { font-size: 12px; word-break: break-all; }
+  .mono { font-family: ui-monospace, Consolas, monospace; }
+  .muted { color: #6b7280; font-size: 12px; }
+  blockquote { border-left: 3px solid #b45309; margin: 8px 0; padding: 4px 12px; background: #fffbeb; }
+  #live { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>故事线：黄帝是层层累加出来的吗</h1>
+<div class="sub"><a href="/">← 返回演示首页</a> · <a href="/story.html">创世记线</a> · <a href="/story-david.html">大卫线</a> · 每一步都能点进真实账本数据验证；凡“说”皆为假说，无定论。</div>
+
+<div class="step">
+  <h2>第 1 步 · 人人都背过的现象：黄帝“生而神灵”</h2>
+  <blockquote>史记·五帝本纪：黄帝者，少典之子，姓公孙，名曰轩辕。生而神灵，弱而能言，幼而徇齐，长而敦敏，成而聪明。</blockquote>
+  <p>这段话中国人从小听到大。但注意它的结构：出身（少典之子）+ 名号（公孙/轩辕）+ 一串德行形容（神灵、能言、徇齐、敦敏、聪明）。一个“生而”配五个美德——这是记录，还是颂词？</p>
+  <div class="go"><button data-live="huangdi">看看这段在账本里的位置</button> <span class="muted">→ 搜索“生而神灵”的字符区间</span></div>
+</div>
+
+<div class="step">
+  <h2>第 2 步 · 顾颉刚的回答：层累地造成的古史</h2>
+  <p>1920 年代顾颉刚提出：时代愈后，传说的古史期愈长；时代愈后，传说中的中心人物愈放得硕大无朋。黄帝在先秦只是诸子偶提的人物，到《史记》成了五帝之首——形象是战国至汉层层累加出来的。<strong>注意：这是假说</strong>，不是定论；它解释“为什么越晚越详细”，但不能证明黄帝不存在。</p>
+  <div class="go"><button data-live="layers">看看系统的候选是怎么并列的</button> <span class="muted">→ 层累说 / 传说时代重建并存，谁也不淘汰谁</span></div>
+</div>
+
+<div class="step">
+  <h2>第 3 步 · 为什么没完：徐旭生的另一条路</h2>
+  <p>徐旭生《中国古史的传说时代》走了另一条路：承认传说有层累，但认为剥离层累后仍可能留下一段“传说时代”的真实内核——比如黄帝可能对应某个真实存在的部族首领记忆。于是两条路并存：<strong>层累说</strong>（重点在“怎么加上去的”）与<strong>传说时代重建</strong>（重点在“剥掉之后还剩什么”）。本系统两条都留着。</p>
+  <div class="go"><button data-live="trace">看看机器提议的候选长什么样</button> <span class="muted">→ 对黄帝段跑一遍候选生成器，全是占位、等你改写</span></div>
+</div>
+
+<div class="step">
+  <h2>第 4 步 · 亲手试试</h2>
+  <p>去 <a href="/analyze.html">分析页</a>，文本框默认就是这段黄帝文字。点“机器提议候选”（新按钮），系统按句子切出候选；你改写 mapping、签字写解读，重构文本才会出现。顺序永远是：<b>最佳拟合 → 量化 → 重构文本</b>。</p>
+  <div class="go"><button data-live="metrics">先看看健康度仪表盘</button> <span class="muted">→ 残余比例、分支数、平均置信度如实展示</span></div>
+</div>
+
+<div class="step">
+  <h2>实时验证</h2>
+  <div id="live">点上面任意一步的按钮，这里显示从真实账本取回的数据。</div>
+</div>
+
+<script>
+"use strict";
+async function jget(path) { return JSON.parse(await (await fetch(path)).text()); }
+async function jpost(path, body) {
+  const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+  return JSON.parse(await r.text());
+}
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+document.querySelectorAll("button[data-live]").forEach(b => b.onclick = async () => {
+  const box = document.getElementById("live");
+  box.textContent = "查询中…";
+  try {
+    if (b.dataset.live === "huangdi") {
+      const hits = await jget("/api/search?q=" + encodeURIComponent("生而神灵") + "&limit=5");
+      box.innerHTML = hits.length
+        ? hits.map(h => `<div>“${esc(h.text_span.slice(0, 40))}…” <code>[${h.char_range}]</code> <span class="muted mono">${esc(h.source_id.slice(0, 20))}…</span></div>`).join("")
+        : "内存库中暂无该句（先点“重放演示”或去分析页摄取）。正式账本以创世记/申命记为主。";
+    } else if (b.dataset.live === "layers") {
+      const layers = await jget("/api/layers");
+      box.innerHTML = layers.map(l => `<div>· ${esc(l.label)} <code class="mono">${esc(l.model_id)}</code></div>`).join("");
+    } else if (b.dataset.live === "trace") {
+      const srcs = await jget("/api/sources");
+      const gen = srcs.find(s => s.title.includes("Genesis"));
+      const sid = gen ? gen.source_id : (srcs[0] || {}).source_id;
+      const r = await jpost("/api/analyze/propose", {source_id: sid});
+      box.innerHTML = `对 ${esc((srcs.find(s => s.source_id === sid) || {}).title || sid)} 生成 ${r.count} 条机器候选：<br>` +
+        r.candidates.slice(0, 4).map(c => `<div>· <code>${esc(c.candidate_id)}</code> ${esc(c.label)} <span class="muted">（占位，待改写）</span></div>`).join("") +
+        `<div class="muted">全部 machine_proposed=true，不作结论。</div>`;
+    } else if (b.dataset.live === "metrics") {
+      const m = await jget("/api/metrics");
+      box.innerHTML = `残余标记比例 <code>${esc(m.residue_mark_ratio)}</code> · 已批准 fork ${m.approved_fork_count} · 平均置信度 ${esc(m.mean_confidence)}（占位）`;
+    }
+  } catch (e) { box.textContent = "查询失败：" + (e.message || e); }
+});
+</script>
+</body>
+</html>

@@ -17,6 +17,7 @@ from critical_genealogy.ledger import CorpusLedger, LedgerError
 
 ANALYZE_ROUTES = [
     ("POST /api/analyze/ingest", "摄取任意 UTF-8 中英文文本，返回 source_id"),
+    ("POST /api/analyze/propose", "机器提议解读候选（仅进待审队列）"),
     ("POST /api/analyze/run", "对候选算拟合分并排序（Phase 2）"),
     ("GET /api/analyze/result?job_id=", "最佳拟合 + 量化面板（Phase 2）"),
     ("POST /api/analyze/approve", "签字批准候选（Phase 3）"),
@@ -94,6 +95,87 @@ class AnalysisAPI:
             "char_count": result.char_count,
             "unit_count": len(result.units),
             "already_present": result.already_present,
+        }
+
+    # -- Candidate generator (mechanical templates, no semantics) -----------
+    # Splits text into sentence spans by CJK/English punctuation, then emits
+    # candidates at three granularities (single / pair / whole). Conditions
+    # rotate over observable-evidence templates so they pass the mechanical
+    # validator. Mappings are explicit placeholders for humans to rewrite.
+    _SENTENCE_ENDS = ("。", "！", "？", "；", "!", "?", ";", "\n")
+    _CONDITION_TEMPLATES = (
+        "若在同时期铭文或考古遗址地层中发现与该跨度叙述相矛盾的材料，则本机器提议必须重审。",
+        "一旦出土与该跨度所述内容相冲突的泥版文书或税簿行政记录，则本机器提议应判为被证伪。",
+        "若放射性碳测年或树轮年代测定将该跨度的成文时间排除在假设窗口之外，则本机器提议需作废。",
+        "如果在同类陶片地层或建筑遗迹中发现推翻该跨度关键假定的材料，则本机器提议须撤回。",
+    )
+
+    @classmethod
+    def _sentence_spans(cls, text: str) -> list[tuple[int, int]]:
+        spans: list[tuple[int, int]] = []
+        start = 0
+        for index, char in enumerate(text):
+            if char in cls._SENTENCE_ENDS:
+                end = index + 1
+                if text[start:end].strip():
+                    spans.append((start, end))
+                start = end
+        if text[start:].strip():
+            spans.append((start, len(text)))
+        return spans
+
+    def propose(self, body: dict[str, Any]) -> dict[str, Any]:
+        source_id = body.get("source_id", "")
+        if not isinstance(source_id, str) or not source_id:
+            raise LedgerError("source_id must not be empty")
+        ledger = self.ledger
+        with ledger._connect() as connection:
+            row = connection.execute(
+                "SELECT char_count FROM documents WHERE source_id = ?", (source_id,)
+            ).fetchone()
+            if row is None:
+                raise LedgerError(f"unknown source_id: {source_id}")
+            char_count = int(row["char_count"])
+        located = ledger.locate_span(source_id, 0, char_count)
+        text = located.text_span
+        sentences = self._sentence_spans(text)
+        if not sentences:
+            raise LedgerError("no sentence spans found in source text")
+        picked = sentences[:4]
+        candidates: list[dict[str, Any]] = []
+        counter = 0
+
+        def add(label: str, spans: list[tuple[int, int]]) -> None:
+            nonlocal counter
+            if len(candidates) >= 12:
+                return
+            counter += 1
+            covered = sum(e - s for s, e in spans)
+            candidates.append(
+                {
+                    "candidate_id": f"G-{counter:02d}",
+                    "label": label,
+                    "rule_id": f"GEN-{counter:02d}",
+                    "mapping": f"占位映射（机器提议）：聚焦跨度 {spans} 共 {covered} 字，待人工改写为真实解读。",
+                    "spans": [[s, e] for s, e in spans],
+                    "condition": self._CONDITION_TEMPLATES[(counter - 1) % len(self._CONDITION_TEMPLATES)],
+                    "reasoning_chain": [
+                        "步骤一（机器）：引用上述原文跨度，未做语义判断。",
+                        "步骤二（机器）：条件指向可观测证据类型，待人工复核改写。",
+                    ],
+                    "machine_proposed": True,
+                }
+            )
+
+        for i, span in enumerate(picked):
+            add(f"机器提议·单句{i + 1}", [span])
+        for i in range(len(picked) - 1):
+            add(f"机器提议·双句{i + 1}-{i + 2}", [picked[i], picked[i + 1]])
+        add("机器提议·全文", [(0, char_count)])
+        return {
+            "ok": True, "source_id": source_id, "sentence_count": len(sentences),
+            "candidates": candidates, "count": len(candidates),
+            "note": "机器提议仅进待审队列，不作结论；请人工改写 mapping 后再签字。",
         }
 
     # -- Phase 2: mechanical fit scoring ------------------------------------
@@ -438,6 +520,8 @@ def dispatch_analyze(api: AnalysisAPI, path: str, body: dict[str, Any]) -> tuple
     try:
         if route == "/api/analyze/ingest":
             return 200, api.ingest(body)
+        if route == "/api/analyze/propose":
+            return 200, api.propose(body)
         if route == "/api/analyze/run":
             return 200, api.run(body)
         if route == "/api/analyze/result":

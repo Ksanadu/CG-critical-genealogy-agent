@@ -38,7 +38,7 @@
 <div class="card">
   <h2>② 填写解读候选（至少 1 条，可多条对比）</h2>
   <div id="candRows"></div>
-  <div><button id="addCand">+ 加一条候选</button> <button id="run">计算拟合排序</button> <span id="runOut" class="muted">—</span></div>
+  <div><button id="addCand">+ 加一条候选</button> <button id="propose">机器提议候选</button> <button id="run">计算拟合排序</button> <span id="runOut" class="muted">—</span></div>
 </div>
 
 <div class="card">
@@ -108,6 +108,25 @@ function readCands() {
       condition: g("condition").trim(), reasoning_chain: g("reasoning_chain").split("；").map(s => s.trim()).filter(Boolean)};
   });
 }
+
+$("propose").onclick = async () => {
+  if (!SOURCE) { $("runOut").textContent = "请先摄取文本"; return; }
+  const r = await jpost("/api/analyze/propose", {source_id: SOURCE});
+  if (!r.ok && !r.candidates) { $("runOut").textContent = "失败：" + r.error; return; }
+  const box = $("candRows"); box.dataset.n = 0; box.innerHTML = "";
+  r.candidates.forEach((c, i) => {
+    const d = document.createElement("div");
+    const spanStr = JSON.stringify(c.spans);
+    d.innerHTML = `<b>候选 ${i + 1}（机器提议·占位）</b> ID <input data-k="candidate_id" size="8" value="${esc(c.candidate_id)}"> 标签 <input data-k="label" size="18" value="${esc(c.label)}"> 规则 <input data-k="rule_id" size="8" value="${esc(c.rule_id)}">
+    <br>跨度 <input data-k="spans" size="30" value='${esc(spanStr)}' class="mono">
+    <br>映射 <input data-k="mapping" size="60" value="${esc(c.mapping)}">
+    <br>可证伪条件 <input data-k="condition" size="70" value="${esc(c.condition)}">
+    <br>推理链（分号分隔） <input data-k="reasoning_chain" size="60" value="${esc(c.reasoning_chain.join("；"))}">`;
+    box.appendChild(d);
+  });
+  box.dataset.n = r.candidates.length;
+  $("runOut").textContent = `机器提议 ${r.count} 条（${r.sentence_count} 句），请改写 mapping 后再算分`;
+};
 
 $("run").onclick = async () => {
   if (!SOURCE) { $("runOut").textContent = "请先摄取文本"; return; }

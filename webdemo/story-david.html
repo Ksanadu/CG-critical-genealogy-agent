@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>故事线：大卫的王国到底有多大 · CG Web Demo</title>
+<style>
+  body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; color: #1c1c1e; line-height: 1.8; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+  .step { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
+  .step h2 { font-size: 16px; margin: 0 0 6px; }
+  .step .go { margin-top: 8px; }
+  button { font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid #1c1c1e; background: #fff; cursor: pointer; }
+  code { font-size: 12px; word-break: break-all; }
+  .mono { font-family: ui-monospace, Consolas, monospace; }
+  .muted { color: #6b7280; font-size: 12px; }
+  blockquote { border-left: 3px solid #b45309; margin: 8px 0; padding: 4px 12px; background: #fffbeb; }
+  #live { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>故事线：大卫的王国到底有多大</h1>
+<div class="sub"><a href="/">← 返回演示首页</a> · <a href="/story.html">创世记线</a> · <a href="/story-huangdi.html">黄帝线</a> · 每一步都能点进真实账本数据验证；凡“说”皆为假说，无定论。</div>
+
+<div class="step">
+  <h2>第 1 步 · 人人都听过的现象：圣经里的大卫王国很大</h2>
+  <blockquote>撒母耳记与列王纪的叙事：大卫建都耶路撒冷，击败非利士、摩押、亚兰，版图从埃及河到幼发拉底——一个强大的统一王国。</blockquote>
+  <p>这是流传两千年的叙事。但它写成于事件几百年后。问题和黄帝一样：晚出的详细叙事， deposit了多少后人的想象？</p>
+  <div class="go"><button data-live="deut">看看账本里的申命记语料</button> <span class="muted">→ 正式账本含完整申命记 34 章，可检索验证</span></div>
+</div>
+
+<div class="step">
+  <h2>第 2 步 · 最大化 vs 最小化：两派都拿得出手</h2>
+  <p><strong>最大化学派</strong>：基本信任圣经叙事的框架，认为公元前 10 世纪确有一个相当规模的大卫-所罗门王国。<strong>最小化学派</strong>：认为考古证据（耶路撒冷 10 世纪地层单薄、缺少大型行政建筑）不支持大国叙事，大卫更像地方首领。1993 年<strong>特尔丹石碑</strong>出土（刻有“大卫之家”）后，最小化派也承认大卫其人可能存在——争论收缩到“国有多大”。<strong>注意：双方都是假说。</strong></p>
+  <div class="go"><button data-live="layers">看看系统怎么并列两种解释</button> <span class="muted">→ D 典 / Dtr 单一编者 / 多阶段修订三条候选并存</span></div>
+</div>
+
+<div class="step">
+  <h2>第 3 步 · 为什么没完：一块石碑不够判全场</h2>
+  <p>特尔丹石碑证明了“大卫之家”这个名号在公元前 9 世纪已存在，但它不证明 10 世纪的疆域。考古是“证伪强、证实弱”的证据：它能推翻具体论断，很难确证一个王国的 exact 版图。于是两种解释继续并存——这正是本系统“保留分歧”的现实对应物。</p>
+  <div class="go"><button data-live="trace">看看一条申命记结论的证据链</button> <span class="muted">→ Proposal → 父假设 → 原文跨度 → 账本哈希</span></div>
+</div>
+
+<div class="step">
+  <h2>第 4 步 · 亲手试试</h2>
+  <p>去 <a href="/analyze.html">分析页</a> 粘贴一段关于大卫的叙事（中文或英文），点“机器提议候选”，改写 mapping、签字写解读，重构文本才会出现。顺序永远是：<b>最佳拟合 → 量化 → 重构文本</b>。</p>
+  <div class="go"><button data-live="metrics">先看看健康度仪表盘</button> <span class="muted">→ 残余比例、分支数、平均置信度如实展示</span></div>
+</div>
+
+<div class="step">
+  <h2>实时验证</h2>
+  <div id="live">点上面任意一步的按钮，这里显示从真实账本取回的数据。</div>
+</div>
+
+<script>
+"use strict";
+async function jget(path) { return JSON.parse(await (await fetch(path)).text()); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+document.querySelectorAll("button[data-live]").forEach(b => b.onclick = async () => {
+  const box = document.getElementById("live");
+  box.textContent = "查询中…";
+  try {
+    if (b.dataset.live === "deut") {
+      const srcs = await jget("/api/sources");
+      const deut = srcs.find(s => s.title.includes("Deuteronomy"));
+      box.innerHTML = deut
+        ? `申命记在账本中：<code class="mono">${esc(deut.source_id.slice(0, 24))}…</code> · ${deut.unit_count} 个单元 · ${deut.char_count} 字`
+        : "正式账本中暂无申命记（内存库语境）。";
+    } else if (b.dataset.live === "layers") {
+      const layers = await jget("/api/layers");
+      const dtr = layers.filter(l => /dtr|deuteronom|documentary_d/i.test(l.model_id));
+      box.innerHTML = (dtr.length ? dtr : layers).map(l => `<div>· ${esc(l.label)} <code class="mono">${esc(l.model_id)}</code></div>`).join("");
+    } else if (b.dataset.live === "trace") {
+      const props = await jget("/api/proposals");
+      const deut = props.find(p => p.rule_id.includes("DSRC")) || props[0];
+      const t = await jget("/api/trace?proposal_id=" + encodeURIComponent(deut.proposal_id));
+      box.innerHTML = `<b>${esc(t.proposal.rule_id)}</b> ↳ ${esc(t.parent_hypotheses[0].model_id)} ↳ <code>[${t.source_spans[0].char_range}]</code> ↳ ${t.source_spans[0].ledger_entries.length} 条账本记录<br><span class="muted">unbroken=${t.unbroken}</span>`;
+    } else if (b.dataset.live === "metrics") {
+      const m = await jget("/api/metrics");
+      box.innerHTML = `残余标记比例 <code>${esc(m.residue_mark_ratio)}</code> · 已批准 fork ${m.approved_fork_count} · 平均置信度 ${esc(m.mean_confidence)}（占位）`;
+    }
+  } catch (e) { box.textContent = "查询失败：" + (e.message || e); }
+});
+</script>
+</body>
+</html>
