@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>故事线：从两个创世故事说起 · CG Web Demo</title>
+<style>
+  body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; color: #1c1c1e; line-height: 1.8; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+  .step { border: 1px solid #e5e7eb; border-radius: 10px; padding: 14px 16px; margin-top: 12px; }
+  .step h2 { font-size: 16px; margin: 0 0 6px; }
+  .step .go { margin-top: 8px; }
+  button { font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid #1c1c1e; background: #fff; cursor: pointer; }
+  code { font-size: 12px; word-break: break-all; }
+  .mono { font-family: ui-monospace, Consolas, monospace; }
+  .muted { color: #6b7280; font-size: 12px; }
+  blockquote { border-left: 3px solid #b45309; margin: 8px 0; padding: 4px 12px; background: #fffbeb; }
+  #live { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>故事线：从两个创世故事说起</h1>
+<div class="sub"><a href="/">← 返回演示首页</a> · 一条给外行人的引导线：每一步都能点进真实账本数据验证。</div>
+
+<div class="step" id="s1">
+  <h2>第 1 步 · 人人都听过的现象：创世记里有两个创世故事</h2>
+  <p>第 1 章：神六天造天地，第七天安息，人是最后被造的“男人和女人”。第 2 章：先有人（亚当）、再有伊甸园、再有动物、最后才有女人。顺序对不上，神的名字也不一样（第 1 章只叫“神”，第 2 章起叫“耶和华神”）。这不是新发现，是三百年来谁都看得见的现象。</p>
+  <div class="go"><button data-live="gen12">看看原文在哪</button> <span class="muted">→ 定位到创世记 1:1 与 2:4 的字符区间</span></div>
+</div>
+
+<div class="step" id="s2">
+  <h2>第 2 步 · 学者的回答：P 典和 J 典</h2>
+  <p>经典文献假说说：第 1 章到 2 章上半（P 典，祭司文献，讲究秩序）与第 2 章下半起（J 典，用“耶和华”之名，风格生动）来自两个不同的来源，后人把它们编在了一起。注意“假说”二字——这是解释，不是定论。</p>
+  <div class="go"><button data-live="layers">看看系统里的 5 条候选</button> <span class="muted">→ 经典 P/J 与“P/非P（J 未定）”并列，谁也没被淘汰</span></div>
+</div>
+
+<div class="step" id="s3">
+  <h2>第 3 步 · 为什么吵了一百年还没完</h2>
+  <p>因为 J 到底是不是一个独立来源，学界自己都没统一：有人坚持 J 是独立文献，有人认为只是多种传统材料的合集。本系统的做法是<strong>两条都留着</strong>——经典 P/J 候选与 P/非P 候选并存，置信度都等人来填（现在是占位 0.5）。“保留分歧”在这里是一个功能，不是无能。</p>
+  <div class="go"><button data-live="trace">看看一条结论的完整证据链</button> <span class="muted">→ Proposal → 父假设 → 原文跨度 → 账本哈希，一步不断</span></div>
+</div>
+
+<div class="step" id="s4">
+  <h2>第 4 步 · 亲手试试：粘贴任意一段历史文本</h2>
+  <p>去 <a href="/analyze.html">分析页</a> 粘贴一段中文或英文史料，填 1～2 条解读候选，机器会算出拟合排序和全部量化指标；你签字后，重构文本才会出现。顺序永远是：<b>最佳拟合 → 量化 → 重构文本</b>。</p>
+  <div class="go"><button data-live="metrics">先看看健康度仪表盘</button> <span class="muted">→ 残余比例、分支数、平均置信度如实展示</span></div>
+</div>
+
+<div class="step">
+  <h2>实时验证</h2>
+  <div id="live">点上面任意一步的按钮，这里显示从真实账本取回的数据。</div>
+</div>
+
+<script>
+"use strict";
+async function jget(path) { return JSON.parse(await (await fetch(path)).text()); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+document.querySelectorAll("button[data-live]").forEach(b => b.onclick = async () => {
+  const box = document.getElementById("live");
+  box.textContent = "查询中…";
+  try {
+    if (b.dataset.live === "gen12") {
+      const srcs = await jget("/api/sources");
+      const gen = srcs.find(s => s.title.includes("Genesis"));
+      const a = await jget(`/api/locate?source_id=${gen.source_id}&start=16&end=70`);
+      box.innerHTML = `创世记 1:1 在账本中的位置：<code>[16, 70)</code><br>“${esc(a.text_span)}”<br><span class="muted">source ${esc(gen.source_id.slice(0, 24))}… · ${gen.unit_count} 个单元</span>`;
+    } else if (b.dataset.live === "layers") {
+      const layers = await jget("/api/layers");
+      box.innerHTML = layers.map(l => `<div>· ${esc(l.label)} <code class="mono">${esc(l.model_id)}</code> — ${l.decision === "approve" ? "已签（占位 0.5）" : "待审"}</div>`).join("");
+    } else if (b.dataset.live === "trace") {
+      const props = await jget("/api/proposals");
+      const t = await jget("/api/trace?proposal_id=" + encodeURIComponent(props[0].proposal_id));
+      box.innerHTML = `<b>${esc(t.proposal.rule_id)}</b> ↳ ${esc(t.parent_hypotheses[0].model_id)} ↳ <code>[${t.source_spans[0].char_range}]</code> ↳ ${t.source_spans[0].ledger_entries.length} 条账本记录<br><span class="muted">unbroken=${t.unbroken}</span>`;
+    } else if (b.dataset.live === "metrics") {
+      const m = await jget("/api/metrics");
+      box.innerHTML = `残余标记比例 <code>${esc(m.residue_mark_ratio)}</code> · 已批准 fork ${m.approved_fork_count} · 平均置信度 ${esc(m.mean_confidence)}（占位）`;
+    }
+  } catch (e) { box.textContent = "查询失败：" + (e.message || e); }
+});
+</script>
+</body>
+</html>

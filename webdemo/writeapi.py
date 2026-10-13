@@ -73,6 +73,13 @@ class DemoWriteAPI:
         self.state = {"ready": True, "ledger_head": head, "steps": []}
         return {"ok": True, "ready": True, "ledger_head": head}
 
+    def ensure_ledger(self) -> CorpusLedger:
+        """Return the scratch ledger, implicitly resetting if none exists."""
+        if not self.state.get("ready") or self.ledger is None:
+            self.reset()
+        assert self.ledger is not None
+        return self.ledger
+
     def _agents(self):
         if not self.state.get("ready") or self.ledger is None or self.decisions_path is None:
             raise LedgerError("demo ledger is not ready; call POST /api/demo/reset first")

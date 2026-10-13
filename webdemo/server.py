@@ -12,11 +12,12 @@ from urllib.parse import urlparse
 
 from critical_genealogy import CorpusLedger
 from critical_genealogy.ledger import LedgerError
+from webdemo.analysis import ANALYZE_ROUTES, AnalysisAPI, dispatch_analyze
 from webdemo.readapi import ROUTE_TABLE, ReadAPI, dispatch
 from webdemo.writeapi import DEMO_ROUTES, DemoWriteAPI, dispatch_demo
 
 SERVICE_NAME = "cg-webdemo"
-SERVICE_VERSION = "0.1.0-phase0"
+SERVICE_VERSION = "0.2.0-text-analysis"
 DEFAULT_PORT = 8077
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -24,7 +25,7 @@ DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "ledger.sqlite3"
 DEFAULT_OBJECT_DIR = PROJECT_ROOT / "data" / "objects"
 
 
-def _json_body(handler: BaseHTTPRequestHandler, limit: int = 1 << 20) -> dict:
+def _json_body(handler: BaseHTTPRequestHandler, limit: int = 1 << 21) -> dict:
     length = int(handler.headers.get("Content-Length") or 0)
     if length <= 0:
         return {}
@@ -96,6 +97,7 @@ class DemoHandler(BaseHTTPRequestHandler):
             elif parsed.path == "/api/docs":
                 rows = "".join(f"<tr><td><code>{r}</code></td><td>{d}</td></tr>" for r, d in ROUTE_TABLE)
                 demo_rows = "".join(f"<tr><td><code>{r}</code></td><td>{d}</td></tr>" for r, d in DEMO_ROUTES)
+                analyze_rows = "".join(f"<tr><td><code>{r}</code></td><td>{d}</td></tr>" for r, d in ANALYZE_ROUTES)
                 self._send_html(200, "<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'>"
                                      "<title>CG Web Demo API</title></head><body>"
                                      "<h1>CG Web Demo API (v1)</h1>"
@@ -103,19 +105,26 @@ class DemoHandler(BaseHTTPRequestHandler):
                                      f"<table border='1'><tr><th>路由</th><th>用途</th></tr>{rows}</table>"
                                      "<h2>演示写入（仅内存库，不碰正式账本）</h2>"
                                      f"<table border='1'><tr><th>路由</th><th>用途</th></tr>{demo_rows}</table>"
+                                     "<h2>通用文本分析（内存库）</h2>"
+                                     f"<table border='1'><tr><th>路由</th><th>用途</th></tr>{analyze_rows}</table>"
                                      "<p>错误体统一为 <code>{\"ok\": false, \"error\": \"...\"}</code>。</p>"
                                      "</body></html>")
-            elif parsed.path == "/":
+            elif parsed.path in ("/", "/index.html", "/analyze.html", "/story.html"):
+                page = "index.html" if parsed.path == "/" else parsed.path.lstrip("/")
                 try:
-                    html = (PROJECT_ROOT / "webdemo" / "index.html").read_text(encoding="utf-8")
+                    html = (PROJECT_ROOT / "webdemo" / page).read_text(encoding="utf-8")
                 except OSError:
                     html = ("<!doctype html><html lang='zh-CN'><head><meta charset='utf-8'>"
                             "<title>CG Web Demo</title></head><body><h1>CG Web Demo</h1>"
                             "<p>前端文件缺失。</p></body></html>")
                 self._send_html(200, html)
             else:
-                status, payload = dispatch(self._active_read_api(), self.path)
-                self._send(status, payload)
+                if parsed.path.startswith("/api/analyze/"):
+                    status, payload = dispatch_analyze(self.demo.analysis_api, self.path, {})
+                    self._send(status, payload)
+                else:
+                    status, payload = dispatch(self._active_read_api(), self.path)
+                    self._send(status, payload)
         except (LedgerError, OSError, sqlite3.Error, ValueError) as error:
             self._fail(500, str(error))
 
@@ -125,6 +134,9 @@ class DemoHandler(BaseHTTPRequestHandler):
             body = _json_body(self)
             if parsed.path.startswith("/api/demo/"):
                 status, payload = dispatch_demo(self.demo.write_api, self.path, body)
+                self._send(status, payload)
+            elif parsed.path.startswith("/api/analyze/"):
+                status, payload = dispatch_analyze(self.demo.analysis_api, self.path, body)
                 self._send(status, payload)
             else:
                 self._fail(404, f"unknown path: {parsed.path}")
@@ -149,6 +161,7 @@ class DemoServer(ThreadingHTTPServer):
         self.read_api = ReadAPI(self.ledger)
         self.write_api = DemoWriteAPI(self.db_path, self.object_dir, PROJECT_ROOT / "data" / "layers")
         self.scratch_api: ReadAPI | None = None
+        self.analysis_api = AnalysisAPI(self.write_api)
         self.scratch = Path(tempfile.mkdtemp(prefix="cg-webdemo-"))
 
 

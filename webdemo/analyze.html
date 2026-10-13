@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分析任意历史文本 · CG Web Demo</title>
+<style>
+  body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; color: #1c1c1e; }
+  .sub { color: #6b7280; font-size: 13px; margin-bottom: 16px; }
+  .card { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; margin-top: 12px; }
+  .card h2 { font-size: 15px; margin: 0 0 8px; }
+  textarea { width: 100%; min-height: 120px; font-size: 14px; padding: 8px; border-radius: 8px; border: 1px solid #e5e7eb; }
+  input, select { font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid #e5e7eb; }
+  button { font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid #1c1c1e; background: #fff; cursor: pointer; margin: 2px; }
+  button:disabled { opacity: .5; cursor: wait; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { border: 1px solid #e5e7eb; padding: 4px 8px; text-align: left; vertical-align: top; }
+  code { font-size: 12px; word-break: break-all; }
+  .mono { font-family: ui-monospace, Consolas, monospace; }
+  .muted { color: #6b7280; font-size: 12px; }
+  .best { background: #f0fdf4; }
+  .sent { border-left: 3px solid #15803d; padding: 6px 10px; margin: 6px 0; background: #f8fafc; }
+  #candRows div { border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+</style>
+</head>
+<body>
+<h1>分析任意历史文本</h1>
+<div class="sub"><a href="/">← 返回演示首页</a> · 中英文皆可（≤1MB）。顺序固定：<b>最佳拟合</b> → <b>量化面板</b> → <b>重构文本（须签字后才存在）</b>。机器只算拟合分、不下史学结论。</div>
+
+<div class="card">
+  <h2>① 粘贴文本并摄取</h2>
+  <div>标题：<input id="title" size="40" value="演示文本（占位）"></div>
+  <div style="margin-top:6px"><textarea id="text">史记·五帝本纪：黄帝者，少典之子，姓公孙，名曰轩辕。生而神灵，弱而能言，幼而徇齐，长而敦敏，成而聪明。轩辕之时，神农氏世衰，诸侯相侵伐，百姓不便。</textarea></div>
+  <div style="margin-top:6px"><button id="ingest">摄取文本</button> <span id="ingestOut" class="muted">—</span></div>
+</div>
+
+<div class="card">
+  <h2>② 填写解读候选（至少 1 条，可多条对比）</h2>
+  <div id="candRows"></div>
+  <div><button id="addCand">+ 加一条候选</button> <button id="run">计算拟合排序</button> <span id="runOut" class="muted">—</span></div>
+</div>
+
+<div class="card">
+  <h2>③ 最佳拟合结果 <span class="muted">（机器计算，未经签字）</span></h2>
+  <div id="best">—</div>
+</div>
+
+<div class="card">
+  <h2>④ 全部量化标准</h2>
+  <div id="metrics">—</div>
+</div>
+
+<div class="card">
+  <h2>⑤ 重构文本 <span class="muted">（签字前不存在）</span></h2>
+  <div id="recon">—</div>
+  <div style="margin-top:6px" id="approveBox">
+    对候选 <select id="apprCand"></select>
+    签字人 <input id="signer" size="16" value="演示者">
+    置信度 <input id="conf" size="5" value="0.5">
+    <br>理由（≥20字）：<input id="reason" size="60" value="我已阅读该候选的拟合分与证据跨度，认可其进入已签重构文本，理由如上所述。">
+    <button id="approve">签字批准</button> <span id="apprOut" class="muted">—</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+async function jpost(path, body) {
+  const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+  return JSON.parse(await r.text());
+}
+async function jget(path) { return JSON.parse(await (await fetch(path)).text()); }
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+let SOURCE = null, CHAR_COUNT = 0, JOB = null;
+
+function candRow(i) {
+  const d = document.createElement("div");
+  d.innerHTML = `<b>候选 ${i + 1}</b> ID <input data-k="candidate_id" size="8" value="C-${i + 1}"> 标签 <input data-k="label" size="14" value="候选${i + 1}"> 规则 <input data-k="rule_id" size="8" value="TA-0${i + 1}">
+  <br>跨度 <input data-k="spans" size="24" value="[[0, 30]]" class="mono">（如 [[0,30],[30,60]]，字符区间）
+  <br>映射 <input data-k="mapping" size="50" value="占位映射：待人工填写。">
+  <br>可证伪条件 <input data-k="condition" size="70" value="若在同时期铭文或考古遗址地层中发现与该叙述相矛盾的材料，则本占位映射必须重审。">
+  <br>推理链（分号分隔，至少两步） <input data-k="reasoning_chain" size="60" value="步骤一：引用原文跨度。；步骤二：条件可观测，待人工复核。">`;
+  return d;
+}
+function refreshCands() {
+  const box = $("candRows"); box.innerHTML = "";
+  const n = Math.max(1, box.dataset.n ? +box.dataset.n : 2);
+  box.dataset.n = n;
+  for (let i = 0; i < n; i++) box.appendChild(candRow(i));
+}
+$("addCand").onclick = () => { const box = $("candRows"); box.dataset.n = (+box.dataset.n || 2) + 1; refreshCands(); };
+refreshCands();
+
+$("ingest").onclick = async () => {
+  const r = await jpost("/api/analyze/ingest", {title: $("title").value, text: $("text").value});
+  if (!r.ok && !r.source_id) { $("ingestOut").textContent = "失败：" + r.error; return; }
+  SOURCE = r.source_id; CHAR_COUNT = r.char_count;
+  $("ingestOut").textContent = `source ${r.source_id.slice(0, 20)}… · ${r.char_count} 字 · ${r.unit_count} 单元${r.already_present ? "（已存在）" : ""}`;
+};
+
+function readCands() {
+  return [...$("candRows").children].map(d => {
+    const g = (k) => d.querySelector(`[data-k="${k}"]`).value;
+    return {candidate_id: g("candidate_id").trim(), label: g("label").trim(), rule_id: g("rule_id").trim(),
+      mapping: g("mapping").trim(), spans: JSON.parse(g("spans")),
+      condition: g("condition").trim(), reasoning_chain: g("reasoning_chain").split("；").map(s => s.trim()).filter(Boolean)};
+  });
+}
+
+$("run").onclick = async () => {
+  if (!SOURCE) { $("runOut").textContent = "请先摄取文本"; return; }
+  let cands;
+  try { cands = readCands(); } catch (e) { $("runOut").textContent = "候选填写有误：" + e.message; return; }
+  const r = await jpost("/api/analyze/run", {source_id: SOURCE, title: $("title").value, candidates: cands});
+  if (!r.ok && !r.job_id) { $("runOut").textContent = "失败：" + r.error; return; }
+  JOB = r.job_id;
+  $("runOut").textContent = "job " + JOB.slice(0, 20) + "…";
+  await showResult();
+};
+
+async function showResult() {
+  const res = await jget("/api/analyze/result?job_id=" + encodeURIComponent(JOB));
+  const rk = res.ranking, m = res.metrics;
+  const joint = new Set(res.joint_top);
+  $("best").innerHTML = `<span class="muted">status=${esc(res.status)}</span><table><tr><th>排名</th><th>候选</th><th>总分</th><th>覆盖/条件/多样/结构</th><th>与榜首分差</th></tr>` +
+    rk.map((c, i) => { const d = c.breakdown;
+      return `<tr class="${i === 0 ? "best" : ""}"><td>${i + 1}${joint.has(c.candidate_id) && i > 0 ? "（并列）" : ""}</td><td>${esc(c.label)} <code>${esc(c.candidate_id)}</code></td><td><b>${c.total}</b></td><td>${d.coverage}/${d.condition}/${d.diversity}/${d.structure}</td><td>${(res.metrics.fit_detail.find(f => f.candidate_id === c.candidate_id) || {}).gap_to_best}</td></tr>`; }).join("") +
+    `</table><div class="muted">榜首 ${esc(res.best_id)}${res.joint_top.length > 1 ? "（实质并列：" + res.joint_top.map(esc).join("、") + "，不只展示第一名）" : ""} · 次名分差 ${res.runner_up_gap}</div>`;
+  $("metrics").innerHTML = `<table>` +
+    [["证据覆盖率", m.evidence_coverage], ["残余标记比例", m.residue_mark_ratio], ["平行分支数", m.parallel_branches],
+     ["平均置信度", m.mean_confidence], ["条件可观测率", m.condition_observability_rate],
+     ["回溯链完整性", m.trace_integrity], ["账本单元数", m.unit_count]].map(([k, v]) => `<tr><td>${k}</td><td class="mono">${esc(v)}</td></tr>`).join("") +
+    `</table>`;
+  $("apprCand").innerHTML = rk.map(c => `<option value="${c.candidate_id}">${esc(c.label)} (${c.candidate_id}, ${c.total}分)</option>`).join("");
+  await showRecon();
+}
+
+async function showRecon() {
+  const rec = await jget("/api/analyze/reconstruction?job_id=" + encodeURIComponent(JOB));
+  if (rec.status !== "signed") {
+    $("recon").innerHTML = `<span class="muted">${esc(rec.message)}</span>`;
+    return;
+  }
+  $("recon").innerHTML = rec.approvals.map(a =>
+    `<div class="muted">签字人 ${esc(a.signer)} · 置信度 ${a.confidence} · <code>${esc(a.approved_at)}</code><br>理由：${esc(a.reason)}</div>`).join("") +
+    rec.sentences.map(s => `<div class="sent">“${esc(s.text)}”<br><span class="muted"><code>[${s.char_range}]</code> · 候选 ${esc(s.candidate_id)} · ${s.unit_ids.length} 个单元 · 可回溯</span></div>`).join("");
+}
+
+$("approve").onclick = async () => {
+  if (!JOB) return;
+  const r = await jpost("/api/analyze/approve", {job_id: JOB, candidate_id: $("apprCand").value,
+    signer: $("signer").value, reason: $("reason").value,
+    confidence: parseFloat($("conf").value), human_approved: true});
+  if (!r.ok && !r.approval) { $("apprOut").textContent = "失败：" + r.error; return; }
+  $("apprOut").textContent = "已签字";
+  await showResult();
+};
+</script>
+</body>
+</html>
