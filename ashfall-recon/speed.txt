@@ -1,0 +1,82 @@
+﻿### A. 引导
+{"debug":"object","panel":true}
+
+### B. 进入战斗
+Math.min 初始 -> {"name":"min","patched":false}
+
+### C. 倍率阶梯（每档 4s 实测）
+rate     1 | 实测     0.1x | 每帧虚拟   0.003s | 帧数  125 | dt 0.4s / wall 4.02s | Math.min=min
+rate     3 | 实测     0.1x | 每帧虚拟   0.002s | 帧数  253 | dt 0.42s / wall 4.01s | Math.min=min
+rate    10 | 实测    0.11x | 每帧虚拟   0.001s | 帧数  349 | dt 0.43s / wall 4.01s | Math.min=min
+rate   100 | 实测     0.2x | 每帧虚拟   0.003s | 帧数  221 | dt 0.7s / wall 3.5s | Math.min=min
+rate   0.5 | 实测     0.1x | 每帧虚拟   0.001s | 帧数  611 | dt 0.4s / wall 4.01s | Math.min=min
+
+### D. 快捷档按钮
+click 0.25x  -> label=0.25x | slider=133 | {"name":"min","patched":false}
+click 1x     -> label=1.00x | slider=333 | {"name":"min","patched":false}
+click 3x     -> label=3.00x | slider=492 | {"name":"patchedMin","patched":true}
+click 10x    -> label=10.00x | slider=667 | {"name":"patchedMin","patched":true}
+click 100x   -> label=100.00x | slider=1000 | {"name":"patchedMin","patched":true}
+
+### E. 回到 1x 后 Math.min 是否还原
+click 1x -> 1.00x
+   {"name":"min","patched":false}
+  1x 实测 -> {"dt":1.65,"frames":199,"wall":3.01,"perFrame":0.008,"speed":0.55}
+
+### F. 状态栏 + 截图
+{"s-state":"playing","s-time":"18.4s","s-kills":"110","s-enemies":"60","s-allies":"11","s-health":"100%","s-tampered":"no","s-gate":"OPEN","s-rt":"0.7x","s-unclamp":"8"}
+screenshot -> D:\CG\ashfall-recon\trainer-speed.png
+
+### G. 汇总
+[
+ {
+  "rate": 1,
+  "label": "0.10x",
+  "dt": 0.4,
+  "frames": 125,
+  "wall": 4.02,
+  "perFrame": 0.003,
+  "speed": 0.1,
+  "minPatched": false
+ },
+ {
+  "rate": 3,
+  "label": "0.10x",
+  "dt": 0.42,
+  "frames": 253,
+  "wall": 4.01,
+  "perFrame": 0.002,
+  "speed": 0.1,
+  "minPatched": false
+ },
+ {
+  "rate": 10,
+  "label": "0.11x",
+  "dt": 0.43,
+  "frames": 349,
+  "wall": 4.01,
+  "perFrame": 0.001,
+  "speed": 0.11,
+  "minPatched": false
+ },
+ {
+  "rate": 100,
+  "label": "0.20x",
+  "dt": 0.7,
+  "frames": 221,
+  "wall": 3.5,
+  "perFrame": 0.003,
+  "speed": 0.2,
+  "minPatched": false
+ },
+ {
+  "rate": 0.5,
+  "label": "0.10x",
+  "dt": 0.4,
+  "frames": 611,
+  "wall": 4.01,
+  "perFrame": 0.001,
+  "speed": 0.1,
+  "minPatched": false
+ }
+]

@@ -1,0 +1,51 @@
+﻿### A. 引导
+{"debug":"object","panel":true,"gateOpen":true,"stripts":7}
+
+### B. 进入战斗
+{"state":"playing","t":4.5,"lv":0,"pend":0,"kills":2,"allies":1,"mods":0,"wl":1,"pierce":0,"modsSum":0,"tampered":false}
+roster 结构 -> {"roster":{"main":"marines","mainKind":"marine","reinforce":"reinforce","front":"firebat","frontKind":"firebat","artillery":"tank","artilleryKind":"tank","supports":["thor","immortal","colossus","templar"],"plan":["marines","tank","marines","firebat","marines","thor","colossus","immortal","marines","reinforce"],"contracts":"terran"},"baseRosterType":"object","baseRoster":{"main":"marines","mainKind":"marine","reinforce":"reinforce","front":"firebat","frontKind":"firebat","artillery":"tank","artilleryKind":"tank","supports":["thor","immortal","colossus","templar"],"plan":["marines","tank","marines","firebat","marines","thor","colossus","immortal","marines","reinforce"],"contracts":"terran"}}
+
+### C. 满编+满模块 —— 是否重开局（核心回归）
+BEFORE -> {"state":"playing","t":4.5,"lv":0,"pend":0,"kills":2,"allies":1,"mods":0,"wl":1,"pierce":0,"modsSum":0,"tampered":false}
+click -> ok
+AFTER  -> {"state":"playing","t":5.5,"lv":0,"pend":0,"kills":2,"allies":39,"mods":29,"wl":4,"pierce":3,"modsSum":59,"tampered":true}
+tip    -> 部队 +14（共 39）· 模块满级（7 个单位）
+PASS/FAIL -> {"timeNotReset":true,"levelNotReset":true,"killsNotReset":true,"alliedUp":true,"modsUp":true,"sandboxHidden":true}
+
+### C2. 部队构成 / 健康值 NaN 诊断
+单位分布 -> {"firebat":8,"marine":25,"tank":2,"thor":1,"immortal":1,"colossus":1,"templar":1}
+health 探针 -> {"health":100,"isNaN":false,"total":39,"bad":0,"badKinds":[],"sample":[]}
+二次满编（验证是否已真满级）->
+click -> ok
+modsSum 59 -> 59 | mods 29 -> 29 | allies 39 -> 43
+health 探针2 -> {"health":100,"isNaN":false,"allies":43}
+
+### D. 击杀上限 9999999
+输入框 -> {"value":"9999999","max":"9999999","min":"0"}
+click 写入击杀 -> ok
+kills = 9999999 | tip: 击杀数 = 9999999
+
+### E. 写入等级 / 等级 +1
+i-res 值 -> 30
+click 写入等级 -> ok | tip: 等级 Lv.0 → Lv.30 · 补发 30 张升级卡
+   {"lv":30,"pend":30,"state":"playing"}
+click 等级 +1 -> ok | tip: 等级 +1
+  lv: 30 -> 31
+
+### F. 其余按钮
+click 满武器 -> ok | tip: 武器 9 / 穿透 5 / 护甲 40
+   {"wl":9,"pierce":5,"armor":40}
+click 一键清场 -> ok | tip: 清场 8 只
+click 投放 BOSS -> ok | tip: BOSS 已投放（4400 HP）
+   {"hasBoss":true,"hp":4400}
+click 补兵 -> ok | tip: 补兵 +0（共 43）
+click 召唤伙伴 -> ok | tip: 伙伴已召唤
+click +9999 XP -> ok | tip: XP +9999（当前 Lv.31）
+click 判定胜利 -> ok | state: victory
+click 进入无尽 -> ok | {"state":"playing","layer":0}
+click 跳层 -> ok | {"layer":50,"time":7.4}
+
+### G. 最终状态 + 截图
+{"state":"playing","t":7.4,"lv":31,"pend":31,"kills":9999999,"allies":43,"mods":29,"wl":9,"pierce":5,"modsSum":59,"tampered":true}
+状态栏 -> {"s-state":"playing","s-time":"7.3s","s-kills":"9999999","s-enemies":"8","s-allies":"43","s-health":"100%","s-tampered":"YES","s-gate":"OPEN"}
+screenshot -> D:\CG\ashfall-recon\trainer-panel-v11.png

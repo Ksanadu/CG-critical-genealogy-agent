@@ -1,0 +1,78 @@
+# 人工决策日志
+
+截至阶段 0，尚无需签字的解释性决定。阶段 0 只记录原始语料与字符坐标，不生成分层假设、还原提议、残余判定或分支取舍。
+
+后续每条人工批准决定应包含：决定编号、日期、对象及其账本引用（`source_id + char_range`）、决定内容、人工理由、签字人，以及所影响的分支/记录标识。没有显式签字的决定不得写入有效数据。
+
+## Phase 1 人工审阅：sha256:e1aa8c6a946530891af13753a0b87462cec9eac0bb8d21774d2d088b058d7337
+
+- 决定：approve
+- 假设：sha256:63c6cb9b4db5ec6d1c52c8df77e16c3f8dcd64dc6283a98841b6981b1028433c
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4605, 4691)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4691, 11008)
+
+## Phase 1 人工审阅：sha256:4e860b108175e84c95a7db16d988cf5825d49c8dce393def663f376f17ea39e4
+
+- 决定：approve
+- 假设：sha256:f7b935976cb23e771028a9d42ad696bff05b38b9c46d63e077456c77139d8c88
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4605, 4691)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4691, 11008)
+
+## Phase 1 人工审阅：sha256:575cf0150d8a370ff90cd80ea49d3fe81a207843d9434194e1aecd4c98dbfb13
+
+- 决定：approve
+- 假设：sha256:36548fa34e9d0d090ba3bae96a04ddf0a83d07f8213d8c775c27981bd3d93c14
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 1 人工审阅：sha256:d5831c96b186603dc91aa08790d988af5c7e65988226224dbee4f4cd5d12b8f6
+
+- 决定：approve
+- 假设：sha256:dc92012e6e38a4a7595e5f9521a0486b0028873eb26653cb52f0ef064d395ca2
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 1 人工审阅：sha256:42d3c7ce403b677d297e90f303d8bacf99edca4cf5d96ebb1dd6d4d1c5257039
+
+- 决定：approve
+- 假设：sha256:ff682c744eae646897d920b6fc63202a8d5a7631d857b984a8f3d227326fe5db
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 2 人工审阅：sha256:4988ce5dbdcb4528387610d472edb92498ea67114154c2958d05d8116a1b0e6b
+
+- 决定：approve
+- draft_id：sha256:fd0290f17ab3eb98adb299849a279a7d73501eaef0e2b2b2abd552800de5f572
+- 规则：ARUN-GEN-01
+- 映射候选：占位映射 ARUN-GEN-01：以 创世记1–3章经典 P/J? 父假设 为父假设，对原文跨度 [12, 4605) 暂作来源中立登记。用户委托自动验收构造，待人工学术复核。
+- 可证伪条件：若在上述跨度所指的考古遗址或陶片地层中发现与该层叙述次序相矛盾的物质文化序列，则本占位映射必须重审。
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 激活本提案以打通 Phase3 图谱，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)

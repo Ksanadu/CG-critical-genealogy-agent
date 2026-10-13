@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "dispute_key": "genesis_creation_accounts",
+  "corpus_title": "Genesis 1-3 (KJV)",
+  "scope_note": "Two creation-account readings are queued as alternatives. They are candidates only, not accepted assignments. The KJV text is a translation, so its wording does not establish Hebrew lexical evidence. D is outside this Genesis corpus.",
+  "evidence_sources": [
+    {
+      "id": "mckenzie-2022-source-criticism",
+      "citation": "Steven L. McKenzie, What Is Source Criticism?, Bible Odyssey (2022).",
+      "url": "https://www.bibleodyssey.org/articles/what-is-source-criticism/"
+    },
+    {
+      "id": "brettler-divine-creator",
+      "citation": "Marc Zvi Brettler, Differing Conceptions of the Divine Creator, TheTorah.com.",
+      "url": "https://www.thetorah.com/article/differing-conceptions-of-the-divine-creator"
+    }
+  ],
+  "hypotheses": [
+    {
+      "model_id": "classical_documentary_p_j",
+      "label": "经典文献划分：P 与 J?",
+      "summary": "按来源综述所列的传统候选边界保留 P（创 1:1–2:3，并含连接标题 2:4a）与 J?（创 2:4b–3:24）；问号保留来源归属的不确定性。",
+      "assignments": [
+        {
+          "layer_label": "P",
+          "span_specs": [
+            {"start_verse": "1:1", "end_verse": "2:3"},
+            {"start_verse": "2:4a", "end_verse": "2:4a"}
+          ],
+          "note": "候选层标记；须由人工核对边界、证据和措辞。"
+        },
+        {
+          "layer_label": "J?",
+          "span_specs": [
+            {"start_verse": "2:4b", "end_verse": "3:24"}
+          ],
+          "note": "J 归属以问号保留；不得将此候选读作定论。"
+        }
+      ]
+    },
+    {
+      "model_id": "priestly_plus_non_j_traditions",
+      "label": "P 与非 P 多来源/传统材料：不预设统一 J",
+      "summary": "保留 P 作为一条路径，同时把创 2:4b–3:24 记录为 J 归属有争议的非 P 材料；此候选不替不同的多来源或传统循环方案补造更细边界。",
+      "assignments": [
+        {
+          "layer_label": "P",
+          "span_specs": [
+            {"start_verse": "1:1", "end_verse": "2:3"},
+            {"start_verse": "2:4a", "end_verse": "2:4a"}
+          ],
+          "note": "候选层标记；须由人工核对边界、证据和措辞。"
+        },
+        {
+          "layer_label": "非 P／传统材料（J 归属未定）",
+          "span_specs": [
+            {"start_verse": "2:4b", "end_verse": "3:24"}
+          ],
+          "note": "聚合性占位标签，不断言单一来源，也不合并为经典 J。"
+        }
+      ]
+    }
+  ]
+}

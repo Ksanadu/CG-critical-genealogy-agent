@@ -1,0 +1,209 @@
+# 人工决策日志
+
+截至阶段 0，尚无需签字的解释性决定。阶段 0 只记录原始语料与字符坐标，不生成分层假设、还原提议、残余判定或分支取舍。
+
+后续每条人工批准决定应包含：决定编号、日期、对象及其账本引用（`source_id + char_range`）、决定内容、人工理由、签字人，以及所影响的分支/记录标识。没有显式签字的决定不得写入有效数据。
+
+## Phase 1 人工审阅：sha256:e1aa8c6a946530891af13753a0b87462cec9eac0bb8d21774d2d088b058d7337
+
+- 决定：approve
+- 假设：sha256:63c6cb9b4db5ec6d1c52c8df77e16c3f8dcd64dc6283a98841b6981b1028433c
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4605, 4691)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4691, 11008)
+
+## Phase 1 人工审阅：sha256:4e860b108175e84c95a7db16d988cf5825d49c8dce393def663f376f17ea39e4
+
+- 决定：approve
+- 假设：sha256:f7b935976cb23e771028a9d42ad696bff05b38b9c46d63e077456c77139d8c88
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4605, 4691)
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [4691, 11008)
+
+## Phase 1 人工审阅：sha256:575cf0150d8a370ff90cd80ea49d3fe81a207843d9434194e1aecd4c98dbfb13
+
+- 决定：approve
+- 假设：sha256:36548fa34e9d0d090ba3bae96a04ddf0a83d07f8213d8c775c27981bd3d93c14
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 1 人工审阅：sha256:d5831c96b186603dc91aa08790d988af5c7e65988226224dbee4f4cd5d12b8f6
+
+- 决定：approve
+- 假设：sha256:dc92012e6e38a4a7595e5f9521a0486b0028873eb26653cb52f0ef064d395ca2
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 1 人工审阅：sha256:42d3c7ce403b677d297e90f303d8bacf99edca4cf5d96ebb1dd6d4d1c5257039
+
+- 决定：approve
+- 假设：sha256:ff682c744eae646897d920b6fc63202a8d5a7631d857b984a8f3d227326fe5db
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 批准该候选进入活动分层，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 2 人工审阅：sha256:4988ce5dbdcb4528387610d472edb92498ea67114154c2958d05d8116a1b0e6b
+
+- 决定：approve
+- draft_id：sha256:fd0290f17ab3eb98adb299849a279a7d73501eaef0e2b2b2abd552800de5f572
+- 规则：ARUN-GEN-01
+- 映射候选：占位映射 ARUN-GEN-01：以 创世记1–3章经典 P/J? 父假设 为父假设，对原文跨度 [12, 4605) 暂作来源中立登记。用户委托自动验收构造，待人工学术复核。
+- 可证伪条件：若在上述跨度所指的考古遗址或陶片地层中发现与该层叙述次序相矛盾的物质文化序列，则本占位映射必须重审。
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 激活本提案以打通 Phase3 图谱，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b [12, 4605)
+
+## Phase 2 人工审阅：sha256:64d5962e2777fbc679fe7b8b32b07019eb2d9beea4d7fb9f9808d1b02ae3b16f
+
+- 决定：approve
+- draft_id：sha256:6cdf33c49e45a884fb93fdbf22add52177a14180c84bcf61a51e0b5078b589ef
+- 规则：ARUN-DSRC-01
+- 映射候选：占位映射 ARUN-DSRC-01：以 申命记经典 D 典父假设 为父假设，对原文跨度 [16, 152190) 暂作来源中立登记。用户委托自动验收构造，待人工学术复核。
+- 可证伪条件：若在上述跨度所指的考古遗址或陶片地层中发现与该层叙述次序相矛盾的物质文化序列，则本占位映射必须重审。
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 以占位置信度 0.5 激活本提案以打通 Phase3 图谱，尚待人工学术复核。
+- 置信度：0.5
+- human_approved：true
+- 原文引用：
+  - sha256:595b6a472969924c59a75898d6e9af6aeab1e00c69bb699c0d7413bf3e5ae698 [16, 152190)
+
+## Phase 3 图补丁审阅：sha256:83ae11e99da814badcf4380dcbfdf1d53f6fe6cbb09ef48073361d2a2560bcb7
+
+- 决定：approve
+- patch_id：sha256:c6e6101c0e28824e989460d3e2dbc9c4ecf8f51e69a18d77dce9f9abb534b0ad
+- Proposal：sha256:b1a5cff857b011daae99cac5f42be8b2e4cbf2c9d952b42944feacbeeedfb42a
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 3 图补丁审阅：sha256:5b162baaada79e66b892826c903dbb610e95e0a6c6d9d92b98106b9f4b0ce6ee
+
+- 决定：approve
+- patch_id：sha256:0f54afaeed84cd7d8defeaf7a1021a3d821f88a1d989c26a782f83f8815ce107
+- Proposal：sha256:2f596ce5056eb2f2e2b20ec3b287aa375c93133197dadde8077eac74446a73fc
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 3 fork 审阅：sha256:41cc3100d3f956cdc99e62c5f67040d500498d8d2b768ae00f35f536f7bf44c8
+
+- 决定：keep_both
+- request_id：sha256:62c96d2ac4cbf6e7fcadb92e62bfae9322497d690fde356940100879b40824ed
+- fork_point：sha256:b6ae95cc85fb7453412cd1a7402a8dbd5f43e8bb9fb6da9e8b9c5d1d667163dd
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 3 branch 操作：sha256:54483e70628e525a018830d8dd293ace1be8b5bddbc912bf1fd58c396cf1407a
+
+- 决定：merge
+- fork_id：sha256:fd057fd52cd6e8ca0faa091eeb89cbe8398de17f67c95a8520f95253238a5a76
+- 目标分支：branch-priestly, branch-nonpriestly
+- 结果分支：{"branch_id":"branch-posteditorial","description":"用户委托自动验收构造的合并结果分支，仅作记录，不作语义融合。","label":"编后合并路径（占位）","source_refs":[{"char_range":[16,70],"source_id":"sha256:e817e60cbb555f7cadb5b73f04fbb1bf3d5b1bcb8fade5e7e53bb41680ff367b","text_span":"In the beginning God created the heaven and the earth.","unit_ids":["sha256:5b2c92b84d288bfb4561296db629e8ab2f9d61f3fc226462f0217f4a9822234c"]}]}
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 3 fork 审阅：sha256:fa8fd27dd6ad0d8bc4e54bafe70ac9608930e7bc6c062a632038e925e36f0921
+
+- 决定：keep_both
+- request_id：sha256:b9c7818c0d92ec6e00b956afe856881fbbbc121352d6654214de3da025501fa0
+- fork_point：sha256:b7374b09323b77e52587f9a51687372d08995e388c2404562ada8fe1d8ddde09
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 3 branch 操作：sha256:bb2fc8ba53f40ee9e2129e67b269773cae6b37b61aa3a12069adc32bcf5c7551
+
+- 决定：delete
+- fork_id：sha256:57fd3ac041ed31c73454ad34c6aa28999120de33812d8daacf0edf8c667f4c5e
+- 目标分支：branch-early
+- 结果分支：无
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 timeline 审阅：sha256:71c12898b2d4eb037fd1bba8dbc729ae68c87ebc091b34d7186b1262e00cd8df
+
+- event_id：sha256:afb920382eeada15bda6bc6ed393ada4a56944c7afe21d05c7f9172431b3b54e
+- 决定：approve
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 timeline 审阅：sha256:fa35cba19c1230cbeb04d12f64c672576c4e833e569dc6e867b258f816f1db55
+
+- event_id：sha256:93d55264580a165da28a4b55248b4a713d420995ce20a21995b80e2fb34aeed3
+- 决定：approve
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 timeline 审阅：sha256:7be8a5be601c1c61f2437bdd265e38763322c22b21079fbbb9fc187cd67805f4
+
+- event_id：sha256:f9db8410d13cfb64cbb770620ccafa821ca49712fb12c3e79c3a833359af9f34
+- 决定：approve
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 probe 审阅：sha256:b2e103e855b875d4479da5c15b5387886b4f65fc8e3a59d6805ca23c031165e5
+
+- probe：lacan_residue
+- candidate：sha256:a8c165b746682014179b6937097bdd6be2df12a2b508a481658bd31732836e57
+- 决定：keep
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 probe 审阅：sha256:d456753862a559d7c7f0fabb3a638bc77f2d7f0af01397346447d3ff5e899bb8
+
+- probe：deleuze_singularity
+- candidate：sha256:59ae57334b5a156cddbfd21605086991de2a5c001b2f39158289429cc027cbf0
+- 决定：keep
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 probe 审阅：sha256:0753d6426f8122eda531dbbf25f1800d76943eca53545cb8d2a56d4ca17fe14d
+
+- probe：badiou_event_site
+- candidate：sha256:be498a61aca6f345cc2f27186c1f59ee7ed2b244e689034be0e2d020a988ab7b
+- 决定：keep
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- human_approved：true
+
+## Phase 4 backtest：sha256:26e9052694d4bbcacf377967585059ab8cdaf333c0c187b73cfca1c03bb01c6f
+
+- civilization：iron_age_levantine_monarchy
+- tolerance_years：50
+- 审阅人：Ksanadu-auto-run
+- 理由：用户委托自动验收：按 GOALS.md 签署本操作以打通流水线，尚待人工学术复核。
+- raw metrics：{"badiou_event_site":{"candidate_count":1,"match_rate":1.0,"matched_within_tolerance":1,"mean_nearest_gap_years":0.0,"timeline_event_count":3},"deleuze_singularity":{"candidate_count":1,"match_rate":1.0,"matched_within_tolerance":1,"mean_nearest_gap_years":0.0,"timeline_event_count":3},"lacan_residue":{"candidate_count":1,"match_rate":1.0,"matched_within_tolerance":1,"mean_nearest_gap_years":0.0,"timeline_event_count":3}}
+- human_approved：true
+- weight changes applied：none

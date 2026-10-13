@@ -1,0 +1,53 @@
+=== 全部 /api 路径 ===
+/api/feedback
+/api/perf
+
+=== 全部本地存储键 ===
+sc-shooter-pet-v1
+sc-shooter-history
+sc-shooter-runs
+sc-shooter-local-board
+sc-shooter-best
+sc-shooter-unlocked
+sc-shooter-commander
+sc-shooter-mutators
+sc-shooter-updates-seen
+sc-shooter-mix
+sc-shooter-daelaam-seen
+sc-shooter-tutored
+sc-shooter-attempt
+sc-shooter-quality
+sc-shooter-quality-auto
+sc-shooter-replay
+sc-shooter-endless-played
+
+########## DEF function pt( @226500 ##########
+,tt).normalize(),$e.crossVectors(Ze,Ye),rt.copy(Ye).multiplyScalar(l),Je.makeBasis(nt.copy(Ze).multiplyScalar(o),rt,$e).setPosition(e,t,n),H(te,s,c))}function pt(e,t,n,r,i,a){let o=n-e,s=r-t,c=Math.hypot(o,s);return c<.01?!1:(nt.set(-s/c*a,0,o/c*a),rt.set(o,0,s),Je.makeBasis(nt,rt,it).setPosition(e,i,t),!0)}function mt(){let{x0:e,z0:t,x1:n,z1:r}=ge,i=dn.lance.halfWidth,a=n-e,o=r-t,s=Math.hypot(a,o),c=ge.on&&s>.3;for(let e of he)e.visible=c;c&&(pt(e,t,n,r,.09,i*2),ue.matrix.copy(Je),pt(e,t,n,r,.1,.34),de.matrix.copy(Je),le.repeat.set(1,s/.9),le.offset.y=-(performance.now()/1e3*1.6%1),qe.set(-Math.PI/2,0,performance.now()/1e3*1.5),Ke.setFromEuler(qe),V.set(n,.11,r),Ge.set(2*i*1.2/Ps,2*i*1.2/Ps,1),pe.matrix.compose(V,Ke,Ge),qe.set(-Math.PI/2,0
+
+########## DEF pt= @21281 ##########
+ation.y+=Jn.turn*u,d.wrapper.rotation.z+=-Jn.bow*r*(1-Math.min(1,a*2))+Jn.lift*o,i.position.y-=Jn.sink*r*(1-a*.5)-s*s*Jn.rise,!le.swept&&a>.15){le.swept=!0;let e=i.position.z;_().frostfall({x:i.position.x,z:e,reach:Math.max(3,e-Jn.sweepZ),span:l.frostfallSpan,sweep:l.frostfallSweep,freeze:0,frozen:[]},b)}s>0&&se(d,Math.min(1,s*2.2),Xn),!le.lit&&s>=.45&&(le.lit=!0,_().ascend(y())),le.lit&&(i.visible=!1)}if(w.visible=Gn.halo&&i.visible&&f===z.egg,w.visible){let e=.5+.5*Math.sin(t.time*2.2);w.position.set(i.position.x,i.position.y+.5,i.position.z+.2),w.scale.setScalar(1.5+e*.3),w.material.opacity=(.22+e*.14)*(1-te)}d.head&&d.pose&&d.head.quaternion.copy(d.pose);let oe=a.moving?c.move:c.idle,N=!1,ue=c.clips[a.action];ue&&ue!==oe&&(oe=ue,N=a.act
+
+########## DEF function ft( @226180 ##########
+is(nt.copy(Ze).multiplyScalar(o),rt,$e).setPosition(e,t,n),H(w,c,u),Je.makeBasis(nt.copy(Ze).multiplyScalar(s),rt,$e).setPosition(e,t,n),H(T,l,u*.9))}function ft(e,t,n,r,i,a,o,s,c){Ye.set(r-e,i-t,a-n);let l=Ye.length();l<.01||(Ye.divideScalar(l),tt.set(st.position.x-e,st.position.y-t,st.position.z-n),Ze.crossVectors(Ye,tt).normalize(),$e.crossVectors(Ze,Ye),rt.copy(Ye).multiplyScalar(l),Je.makeBasis(nt.copy(Ze).multiplyScalar(o),rt,$e).setPosition(e,t,n),H(te,s,c))}function pt(e,t,n,r,i,a){let o=n-e,s=r-t,c=Math.hypot(o,s);return c<.01?!1:(nt.set(-s/c*a,0,o/c*a),rt.set(o,0,s),Je.makeBasis(nt,rt,it).setPosition(e,i,t),!0)}function mt(){let{x0:e,z0:t,x1:n,z1:r}=ge,i=dn.lance.halfWidth,a=n-e,o=r-t,s=Math.hypot(a,o),c=ge.on&&s>.3;for(let e of h
+
+########## DEF ft= @254074 ##########
+p);for(a=n.from+(n.to-n.from)*e;Math.abs(a-n.lastScar)>=cc.scarStep;){n.lastScar+=Math.sign(a-n.lastScar)*cc.scarStep;let e=bc(M);e.x=n.lastScar,e.drift=0,e.minZ=n.minZ,e.life=cc.scarLife}for(let e=0;e<2;e++){let e=n.minZ+Math.random()*(cc.nearZ-n.minZ);t.puff(`fire`,a+(Math.random()-.5),.5,e,.9,.2,0,1.2,0,16765088,.45)}Math.random()<.5&&t.shard(a,.4,n.minZ+Math.random()*(cc.nearZ-n.minZ),16760928,1.2),pe(.06),e>=1&&(n.ended=!0,N=null)}}let o=n?.drill,s=o?.target&&!o.target.dead?o.target:null,l=!!s&&s===n.boss,d=l?2.5:.8;if(s&&e>0&&(Math.random()<e*12&&t.shard(s.x,d,s.z,Math.random()<.5?16760928:16773328,1.2),Math.random()<e*8&&t.puff(`fire`,s.x+(Math.random()-.5)*.6,d,s.z+(Math.random()-.5)*.6,.7,.2,0,1,0,16765088,.45)),P.on&&Ie(),!Me)retu
+
+########## DEF de= @17398 ##########
+f),i.add(d.wrapper),d.current=null,se(d,0)}function P(){d&&se(d,0),h?.from&&se(h.from,0),h=null,i.clear(),i.visible=!1,f=0,d=null,p=null,F=-1,le=null,de=null,pe=0,he=null,j=0,g?.clear(),re.visible=w.visible=!1,S=0,C=null,A.forEach(e=>e.visible=!1),ie.length=0;for(let e of T)O(e.mesh);T.length=0;for(let e of r.values())e.mixer.stopAllAction(),e.current=null,e.head&&e.pose&&e.head.quaternion.copy(e.pose),e.pose=null}let F=-1,le=null,de=null,pe=0,me=0,he=null;function ge(e){let t=d&&f===z.ascendant&&i.visible;if(e.type===`finish`&&e.result!==`victory`&&e.result!==`defeat`&&t&&(F=0,_().depart(y())),e.type===`petLament`&&t&&(le={age:0,swept:!1,lit:!1}),e.type===`petEvolve`&&_().aura(y(),{size:1.6,stars:14}),e.type===`petRoar`&&(_().aura(y(),{siz
+
+########## SITE Outbox not sent @425106 ##########
+L.continueEndless()){try{localStorage.setItem(`sc-shooter-endless-played`,`1`)}catch{}mt=!1,Dt=1/0,ni({refocus:!1}),jn()&&f.start(),Um(`modal`,!1),Um(`hud`,!0),Um(`xp-bar`,!0),Um(`powers`,L.powers?.ids.length>0),$(`pause-button`).disabled=!1,I.setState(`playing`).catch(e=>I.report(e))}}function kr(){L.retreat(),I.setState(`defeat`).catch(e=>I.report(e)),Um(`modal`,!1),Dt=U}let Mr=()=>{try{return window.localStorage}catch{return null}};function Pr(){let e=!1,t=!1;try{e=localStorage.getItem(`sc-shooter-unlocked`)===`1`,t=localStorage.getItem(`sc-shooter-endless-played`)===`1`}catch{}t||=Ar(Mr()).some(e=>e.layer>=1),$(`endless-hint`).hidden=!e||t}Pr(),setTimeout(()=>pt().catch(e=>console.warn(`Outbox not sent:`,e.message)),4e3);let Fr=()=>{let e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,`0`)}-${String(e.getDate()).padStart(2,`0`)}`};async function Ir(e=null,t=null){let n=$(`leaderboard`);n.hidden=!1;let r=t?.entries??Ar(Mr()),i=t?.rank?`<p class="board-note done">${O(`board.localRank`,{rank:t.rank})}</p>`:``;n.innerHTML=`<div class="board-tabs" role="tablist"><button type="button" role="tab" data-tab="local">${O(`board.localTab`)}</button><button type="but
+
+########## SITE board.tampered @426677 ##########
+et.tab===e));for(let t of n.querySelectorAll(`[data-pane]`))t.hidden=t.dataset.pane!==e};for(let e of n.querySelectorAll(`[data-tab]`))e.addEventListener(`click`,()=>a(e.dataset.tab));a(t?`local`:`global`);let s=n.querySelector(`[data-pane="global"]`);s.innerHTML=`<p class="board-note">${O(`board.loading`)}</p>`;let c;try{c=await Ne()}catch(e){s.innerHTML=`<p class="board-note">${O(`board.offline`)}</p>`,console.warn(`Leaderboard unavailable:`,e.message);return}if(s.innerHTML=(c.cached?`<p class="board-note">${O(`board.cached`)}</p>`:``)+(t&&e===null?`<p class="board-note">${O(`board.globalEndlessOnly`)}</p>`:``)+ze(c),L.tampered){s.insertAdjacentHTML(`beforeend`,`<p class="board-note">${O(`board.tampered`)}</p>`);return}if(e===null||!Oa(c.entries,e))return;a(`global`);let l=document.createElement(`form`);l.className=`board-form`,l.innerHTML=`<label for="board-name">${O(`board.qualify`)}</label><div><input id="board-name" maxlength="${Ta.nameMax}" autocomplete="off" spellcheck="false" placeholder="${O(`board.placeholder`)}"><button type="submit" class="primary-button">${O(`board.submit`)}</button></div><small class="board-error" hidden></small>`,s.prepend(l);let u=l.querySelector(`
+
+########## SITE qualify @426867 ##########
+ocal`:`global`);let s=n.querySelector(`[data-pane="global"]`);s.innerHTML=`<p class="board-note">${O(`board.loading`)}</p>`;let c;try{c=await Ne()}catch(e){s.innerHTML=`<p class="board-note">${O(`board.offline`)}</p>`,console.warn(`Leaderboard unavailable:`,e.message);return}if(s.innerHTML=(c.cached?`<p class="board-note">${O(`board.cached`)}</p>`:``)+(t&&e===null?`<p class="board-note">${O(`board.globalEndlessOnly`)}</p>`:``)+ze(c),L.tampered){s.insertAdjacentHTML(`beforeend`,`<p class="board-note">${O(`board.tampered`)}</p>`);return}if(e===null||!Oa(c.entries,e))return;a(`global`);let l=document.createElement(`form`);l.className=`board-form`,l.innerHTML=`<label for="board-name">${O(`board.qualify`)}</label><div><input id="board-name" maxlength="${Ta.nameMax}" autocomplete="off" spellcheck="false" placeholder="${O(`board.placeholder`)}"><button type="submit" class="primary-button">${O(`board.submit`)}</button></div><small class="board-error" hidden></small>`,s.prepend(l);let u=l.querySelector(`input`),d=l.querySelector(`.board-error`);u.addEventListener(`input`,()=>{u.value=u.value.replace(/[^A-Za-z0-9 -]/g,``).toUpperCase().slice(0,Ta.nameMax)}),u.focus(),l.scrollIntoView({block:
+
+########## SITE submitted @427812 ##########
+oard-error" hidden></small>`,s.prepend(l);let u=l.querySelector(`input`),d=l.querySelector(`.board-error`);u.addEventListener(`input`,()=>{u.value=u.value.replace(/[^A-Za-z0-9 -]/g,``).toUpperCase().slice(0,Ta.nameMax)}),u.focus(),l.scrollIntoView({block:`center`}),l.addEventListener(`submit`,async e=>{e.preventDefault();let t=Da(u.value);if(!t){d.textContent=O(`board.invalid`),d.hidden=!1;return}l.querySelector(`button`).disabled=!0,u.disabled=!0;let n=null;try{n=await Ft}catch{}if(!n?.id){d.textContent=O(`board.failed`),d.hidden=!1,l.querySelector(`button`).disabled=!1,u.disabled=!1;return}try{let e=await o({name:t,id:n.id,token:n.token});s.innerHTML=`<p class="board-note done">${O(`board.submitted`,{rank:e.rank})}</p>`+ze(e,e.rank);let r=s.querySelector(`tr.mine`),i=s.querySelector(`.board-scroll`);r&&i&&(i.scrollTop=r.offsetTop-i.clientHeight/2)}catch(e){if(e.queued){l.replaceWith(Object.assign(document.createElement(`p`),{className:`board-note done`,textContent:O(`board.queued`)}));return}d.textContent=`${O(`board.failed`)} ${e.message}`,d.hidden=!1,l.querySelector(`button`).disabled=!1,u.disabled=!1}})}function Lr(){kt=!0,$(`modal`).classList.add(`board-mode`),$(`modal-eyebro
+
+########## SITE localRank @425421 ##########
+setState(`defeat`).catch(e=>I.report(e)),Um(`modal`,!1),Dt=U}let Mr=()=>{try{return window.localStorage}catch{return null}};function Pr(){let e=!1,t=!1;try{e=localStorage.getItem(`sc-shooter-unlocked`)===`1`,t=localStorage.getItem(`sc-shooter-endless-played`)===`1`}catch{}t||=Ar(Mr()).some(e=>e.layer>=1),$(`endless-hint`).hidden=!e||t}Pr(),setTimeout(()=>pt().catch(e=>console.warn(`Outbox not sent:`,e.message)),4e3);let Fr=()=>{let e=new Date;return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,`0`)}-${String(e.getDate()).padStart(2,`0`)}`};async function Ir(e=null,t=null){let n=$(`leaderboard`);n.hidden=!1;let r=t?.entries??Ar(Mr()),i=t?.rank?`<p class="board-note done">${O(`board.localRank`,{rank:t.rank})}</p>`:``;n.innerHTML=`<div class="board-tabs" role="tablist"><button type="button" role="tab" data-tab="local">${O(`board.localTab`)}</button><button type="button" role="tab" data-tab="global">${O(`board.globalTab`)}</button></div>
+      <div class="board-pane" data-pane="local">${i}${le(r,t?.rank)}${t&&!t.saved?`<p class="board-note">${O(`board.localUnsaved`)}</p>`:``}</div><div class="board-pane" data-pane="global"></div>`;let a=e=>{for(let t of n.querySelectorAll(`[d

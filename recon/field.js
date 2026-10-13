@@ -1,0 +1,1 @@
+import{Ga as e,Ha as t,Ka as n}from"./battle-ui-C33BOuNm.js";var r=e(`copy`,[`victoryTitle`,`victoryBody`,`pauseBody`]),i=[`salvo`,`shrapnel`,`cluster`,`napalm`];function a(e){return i.includes(e)?n(`quip.${e}`):``}function o(e=document){t(e)}export{o as n,a as r,r as t};

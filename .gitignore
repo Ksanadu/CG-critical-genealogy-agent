@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQLite runtime files (regenerated; only the committed ledger.sqlite3 matters)
+*-wal
+*-shm
+*.sqlite3-journal
+
+# Oversized out-of-scope backup: kept locally only, exceeds GitHub's 100MB file limit.
+# See data/dsh-migrate/MIGRATE-MAP.md for what it contains.
+data/dsh-migrate/dsh-web-full-backup.zip
+
+# Scratch / verification copies
+.cgcheck/

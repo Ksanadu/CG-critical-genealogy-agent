@@ -1,0 +1,40 @@
+
+########## DEF function Tu( @509102 ##########
+nergies()}function wu(e,t){for(let n of xu(t))bu(e,n,0);for(let n of At)n.units.includes(t)&&(e.formedSynergies.delete(n.id),e.announcedSynergies.delete(n.id));e.heroic.delete(t),e.refreshSynergies()}function Tu(e,t,n=1){e.tampered=!0;for(let r=0;r<n;r++){if(t===`laserdrill`)return;t===`archon`?e.addArchon(e.x,11):$l[t]?e.addMarines($l[t].supply>1?2:4,t):t===`tank`||t===`reaver`?e.addTank(t):e.addSupport(t,{force:!0})}}function Eu(e,t){for(let n of t.units)e.allies.some(e=>e.kind===n)||Tu(e,n);for(let[n,r]of Object.entries(t.requires))bu(e,n,Math.max(r,w(e,n)));e.refreshSynergies()}function Du(e,t,n=vu[t]){if(e.tampered=!0,!_u[t])throw Error(`Unknown e
+
+########## DEF function Du( @509491 ##########
+nk(t):e.addSupport(t,{force:!0})}}function Eu(e,t){for(let n of t.units)e.allies.some(e=>e.kind===n)||Tu(e,n);for(let[n,r]of Object.entries(t.requires))bu(e,n,Math.max(r,w(e,n)));e.refreshSynergies()}function Du(e,t,n=vu[t]){if(e.tampered=!0,!_u[t])throw Error(`Unknown enemy pack: ${t}`);for(let r=0;r<n;r++)_u[t](e,r)}function Ou(e,t=yu){e.tampered=!0,e.bossSpawned=!0,e.boss={x:0,z:-6,hp:t,maxHp:t,hit:0,dead:!1,phase:0,attack:1.3}}function ku(e,t=null,n=fu){let r={};for(let i of n){let n=e.report.units[i]??{damage:0,kills:0,equipment:{}},a=mu(i),o={damage:n.damage,kills:n.kills,tier:a?n.equipment?.[a]??0:0,triggers:yt[i]?e.equipmentTriggers[yt[i].id]??
+
+########## data-max @515780 ##########
+:Wn[n]}</b><button data-card="${t}" data-step="1" ${n<r.cap?``:`disabled`}>+</button></div>`}).join(``),r=e.heroic.has(t),i=yt[t]?`<button data-heroic="${t}" class="${r?`on`:``}">${I(r?`sandbox.heroicOn`:`sandbox.heroic`)}</button>`:``;return`<section class="sandbox-line"><header><strong>${Me[t]}</strong>${t===`laserdrill`?``:`<button data-add="${t}">${I(`sandbox.add`)}</button>`}
+        <button data-max="${t}">${I(`sandbox.max`)}</button>${i}
+        <button data-clear="${t}">${I(`sandbox.clearCards`)}</button></header><div class="sandbox-cards">${n}</div></section>`}).join(``),n=e.weaponLevel-1,i=r?`<div class="sandbox-row"><span>${I(`sandbox.commander`)}</span>${ju.map(t=>`<button data-c
+
+########## data-card @513834 ##########
+sult">${I(`arena.fighting`)}</p>`:``;return`<section class="arena">
+      <header><strong>${I(`arena.title`)}</strong>${Object.keys(g()).map(e=>`<button data-matchup="${e}">${I(e)}</button>`).join(``)}</header>
+      ${e(`squad`,a().filter(e=>e!==`laserdrill`),I(`arena.squad`))}
+      ${e(`enemy`,f,I(`arena.enemy`))}
+      <div class="arena-row"><span>${I(`arena.cards`)}</span>${p.map(e=>`<button data-cards="${e}" class="${_.cards===e?`on`:``}">${I(`arena.cards.${e}`)}</button>`).join(``)}
+        <button data-arena-boss class="${_.boss?`on`:``}">${I(`unit.ultralisk`)}</button></div>
+      <div class="arena-row"><span>${I(`arena.layer`)}</span><button data-layer="-1">−</button><b>${_.layer}<
+
+########## data-card @515282 ##########
+lass="sandbox-meter"><thead><tr><th>${I(`sandbox.line`)}</th><th>${I(`sandbox.dps`)}</th><th>${I(`sandbox.total`)}</th><th>${I(`sandbox.tierDamage`)}</th></tr></thead><tbody>${i}</tbody></table>`}function T(){let t=a().map(t=>{let n=xu(t).map(t=>{let n=w(e,t),r=G[t];return`<div class="sandbox-card${n?` on`:``}" title="${r.name}"><img src="${wt(t)}" alt=""><span>${r.short}</span>
+          <button data-card="${t}" data-step="-1" ${n?``:`disabled`}>−</button><b>${r.equipment&&r.cap===1?n?`●`:`○`:Wn[n]}</b><button data-card="${t}" data-step="1" ${n<r.cap?``:`disabled`}>+</button></div>`}).join(``),r=e.heroic.has(t),i=yt[t]?`<button data-heroic="${t}" class="${r?`on`:``}">${I(r?`sandbox.heroicOn
+
+########## data-add @515717 ##########
+?``:`disabled`}>−</button><b>${r.equipment&&r.cap===1?n?`●`:`○`:Wn[n]}</b><button data-card="${t}" data-step="1" ${n<r.cap?``:`disabled`}>+</button></div>`}).join(``),r=e.heroic.has(t),i=yt[t]?`<button data-heroic="${t}" class="${r?`on`:``}">${I(r?`sandbox.heroicOn`:`sandbox.heroic`)}</button>`:``;return`<section class="sandbox-line"><header><strong>${Me[t]}</strong>${t===`laserdrill`?``:`<button data-add="${t}">${I(`sandbox.add`)}</button>`}
+        <button data-max="${t}">${I(`sandbox.max`)}</button>${i}
+        <button data-clear="${t}">${I(`sandbox.clearCards`)}</button></header><div class="sandbox-cards">${n}</div></section>`}).join(``),n=e.weaponLevel-1,i=r?`<div class="sandbox-row"><s
+
+########## data-clear @515845 ##########
+isabled`}>+</button></div>`}).join(``),r=e.heroic.has(t),i=yt[t]?`<button data-heroic="${t}" class="${r?`on`:``}">${I(r?`sandbox.heroicOn`:`sandbox.heroic`)}</button>`:``;return`<section class="sandbox-line"><header><strong>${Me[t]}</strong>${t===`laserdrill`?``:`<button data-add="${t}">${I(`sandbox.add`)}</button>`}
+        <button data-max="${t}">${I(`sandbox.max`)}</button>${i}
+        <button data-clear="${t}">${I(`sandbox.clearCards`)}</button></header><div class="sandbox-cards">${n}</div></section>`}).join(``),n=e.weaponLevel-1,i=r?`<div class="sandbox-row"><span>${I(`sandbox.commander`)}</span>${ju.map(t=>`<button data-commander="${t??``}" class="${(e.commander??null)===t?`on`:``}">${
+
+########## data-clear @517211 ##########
+${e===s?`on`:``}">${e?`${e}x`:I(`sandbox.pause`)}</button>`).join(``)}</div>
+        <div class="sandbox-row"><span>${I(`sandbox.swarm`)}</span>${Object.keys(_u).map(e=>`<button data-pack="${e}">+${vu[e]} ${I(`unit.${e}`)}</button>`).join(``)}
+          <button data-boss>${I(`unit.ultralisk`)}</button><button data-trickle class="${e.sandboxTrickle?`on`:``}">${I(`sandbox.trickle`)}</button><button data-clear-enemies>${I(`sandbox.clearEnemies`)}</button></div>
+        <div class="sandbox-row"><span>${I(`sandbox.meter`)} <small>${I(`sandbox.meterWindow`,{seconds:5})}</small></span><button data-meter>${I(`sandbox.meterReset`)}</button><div id="sandbox-meter" class="sandbox-meter-slot">${C()}</di

@@ -1,0 +1,35 @@
+
+===== battle-ui-C33BOuNm.js  (461773 B) =====
+  /api/  -> /api/scores | /api/results
+  storage-> sc-shooter-lang sc-shooter-outbox sc-shooter-board-copy
+
+===== field-language-DZQG9zyB.js  (272 B) =====
+  /api/  -> (none)
+  storage-> (none)
+
+===== game-DBHnnZI4.js  (467406 B) =====
+  /api/  -> /api/feedback | /api/perf
+  storage-> sc-shooter-pet-v1 sc-shooter-history sc-shooter-runs sc-shooter-local-board sc-shooter-best sc-shooter-unlocked sc-shooter-commander sc-shooter-mutators sc-shooter-updates-seen sc-shooter-mix sc-shooter-daelaam-seen sc-shooter-tutored sc-shooter-attempt sc-shooter-quality sc-shooter-quality-auto sc-shooter-replay sc-shooter-endless-played
+
+===== RoomEnvironment-CuqGRA18.js  (689492 B) =====
+  /api/  -> /api/events
+  storage-> (none)
+
+===== game.js 开头 import =====
+import{$ as e,$n as t,A as n,B as r,Bn as i,Br as a,C as o,Ca as s,Cn as c,D as l,Dn as u,Dr as d,Dt as f,E as p,En as m,Et as h,F as g,G as _,Gr as v,Gt as y,H as b,Ha as x,Hn as S,Hr as C,I as w,Ii as T,In as ee,Ji as E,Jn as te,Jr as ne,K as D,Ka as O,Kn as k,Kr as re,Kt as A,M as j,Mn as ie,N as ae,O as M,Oa as oe,Or as N,Pr as se,Q as ce,Qn as P,Ri as F,S as le,Sr as ue,T as de,Tr as fe,Tt as pe,U as me,Ua as he,Ui as ge,Ur as _e,Va as ve,Vi as ye,Vn as be,Vr as xe,Wa as Se,Wr as Ce,Wt as we,Xi as Te,Xr as Ee,Y as De,Zi as Oe,Zn as ke,_ as Ae,a as je,aa as Me,b as Ne,bn as I,bt as L,c as Pe,ca as Fe,ct as Ie,da as Le,dn as R,dt as Re,g as ze,gt as Be,h as Ve,hn as He,ht as Ue,i as We,k as z,kr as B,kt as V,l as Ge,ma as Ke,mn as qe,mt as Je,n as Ye,na as Xe,nn as Ze,nr as Qe,o as $e,oa as et,p as tt,qr as nt,r as rt,rn as it,s as at,st as ot,t as st,tr as H,tt as ct,u as lt,ut as U,v as ut,vn as dt,w as ft,wa as W,x as pt,xn as mt,xr as ht,y as gt,yn as _t,z as vt,zt as yt}from"./battle-ui-C33BOuNm.js";import{A as bt,B as xt,D as St,E as Ct,F as wt,G as Tt,H as Et,I as Dt,J as Ot,K as kt,L as At,M as jt,N as Mt,O as Nt,P as Pt,Q as Ft,R as It,S as Lt,T as Rt,U as zt,V as Bt,W 
+  import-binding Ne: (none)
+  import-binding Ft: (none)
+  import-binding Oa: ,Oa as oe
+  import-binding ze: (none)
+  import-binding Da: (none)
+  import-binding Ta: (none)
+
+===== 标识符计数（game.js）=====
+  Ne(            x13
+  Ft             x19
+  outbox         x0
+  Outbox         x1
+  leaderboard    x5
+  board/         x0
+  runs           x15
+  submit         x6

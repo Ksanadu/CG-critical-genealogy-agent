@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "dispute_key": "deuteronomy_d_history",
+  "corpus_title": "Deuteronomy (KJV)",
+  "scope_note": "The corpus contains Deuteronomy only, not Joshua–Kings or the full Deuteronomistic History. These are candidate frameworks, not accepted assignments. KJV is a translation, and the full-book spans do not claim verse-level source boundaries.",
+  "evidence_sources": [
+    {
+      "id": "mckenzie-2022-source-criticism",
+      "citation": "Steven L. McKenzie, What Is Source Criticism?, Bible Odyssey (2022).",
+      "url": "https://www.bibleodyssey.org/articles/what-is-source-criticism/"
+    },
+    {
+      "id": "mckenzie-deuteronomistic-history",
+      "citation": "Steven L. McKenzie, Deuteronomistic History, Bible Odyssey (2025).",
+      "url": "https://www.bibleodyssey.org/articles/deuteronomistic-history/"
+    }
+  ],
+  "hypotheses": [
+    {
+      "model_id": "classical_documentary_d_source",
+      "label": "经典 JEDP 划分：D 典（申命记来源候选）",
+      "summary": "保存来源批评综述所述的传统 D=Deuteronomy 路径；此候选中的 D 典与其他候选中的 Dtr 历史编纂模型不是同一个概念。当前以整卷文本作为待审范围；不声称全书每一节同一时期写成，也不替人判断内部编订层次。",
+      "assignments": [
+        {
+          "layer_label": "D（经典文献假说候选）",
+          "span_specs": [
+            {"start_verse": "1:1", "end_verse": "34:12"}
+          ],
+          "note": "粗粒度全书范围，仅用于测试 D 典适用性；边界与内部层次待人工审阅。"
+        }
+      ]
+    },
+    {
+      "model_id": "noth_single_deuteronomistic_history",
+      "label": "Noth 单一编者的 Dtr 历史：申命记作为起始卷",
+      "summary": "保存 Noth 所述由申命记至列王纪构成、由单一编者统摄的 Deuteronomistic History 路径。当前语料只有《申命记》，不能据此重建或验证其余各卷。",
+      "assignments": [
+        {
+          "layer_label": "Dtr（单一编者模型，待审）",
+          "span_specs": [
+            {"start_verse": "1:1", "end_verse": "34:12"}
+          ],
+          "note": "整卷引用仅限定待审语料范围，不表示逐节边界已经识别。"
+        }
+      ]
+    },
+    {
+      "model_id": "multi_stage_deuteronomistic_redaction",
+      "label": "Dtr 多阶段编纂／学派修订路径",
+      "summary": "保存 Cross 的双版次、Smend 的后续编订层及 Römer 的书吏学派/多期修订框架所代表的复合路径；此候选不臆造《申命记》内部各编辑层的逐节边界。",
+      "assignments": [
+        {
+          "layer_label": "Dtr 相关编纂复合体（内部层次未定位）",
+          "span_specs": [
+            {"start_verse": "1:1", "end_verse": "34:12"}
+          ],
+          "note": "聚合性候选标签；内部层次与年代均待人工核定。"
+        }
+      ]
+    }
+  ]
+}

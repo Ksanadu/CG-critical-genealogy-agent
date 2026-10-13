@@ -1,0 +1,10 @@
+﻿=== backup manifest 2026-09-29 23:30 ===
+
+Name                                                                     
+----                                                                     
+--C-Users-Ksanadu-AppData-Roaming-npm-node_modules-~0040deepseek-ai-dsh--
+--C-Users-Ksanadu-Deepseek--                                             
+--D-CG--                                                                 
+--D-Workplace--                                                          
+
+
