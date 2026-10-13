@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CG Web Demo · 批判谱系学实机演示</title>
+<style>
+  :root { color-scheme: light; --fg: #1c1c1e; --muted: #6b7280; --line: #e5e7eb; --ok: #15803d; --warn: #b45309; }
+  body { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif; color: var(--fg);
+         max-width: 1080px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .card h2 { font-size: 15px; margin: 0 0 8px; }
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 10px; font-size: 12px; border: 1px solid var(--line); margin: 1px 2px; }
+  .ok { color: var(--ok); border-color: var(--ok); }
+  .warn { color: var(--warn); border-color: var(--warn); }
+  button { font-size: 14px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--fg);
+           background: #fff; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: wait; }
+  select, input { font-size: 14px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); max-width: 100%; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { border: 1px solid var(--line); padding: 4px 8px; text-align: left; vertical-align: top; }
+  code { font-size: 12px; word-break: break-all; }
+  .mono { font-family: ui-monospace, Consolas, monospace; }
+  #log { white-space: pre-wrap; font-size: 12px; background: #f8fafc; border: 1px solid var(--line);
+         border-radius: 8px; padding: 8px 10px; max-height: 220px; overflow: auto; }
+  .muted { color: var(--muted); font-size: 12px; }
+  .lamp { font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>批判谱系学 Agent · 实机演示</h1>
+<div class="sub">只读走正式账本；凡写入/签字动作一律走内存演示库（<span class="mono">POST /api/demo/reset</span> 重建），不污染正式账本。全部签字为占位性质（signer=<span class="mono">webdemo</span>，confidence=0.5），待人工学术复核。· <a href="/api/docs">API 文档</a></div>
+
+<div class="grid">
+  <div class="card">
+    <h2>健康状态</h2>
+    <div id="health">加载中…</div>
+  </div>
+  <div class="card">
+    <h2>健康度指标</h2>
+    <div id="metrics">加载中…</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <h2>一键重放演示（内存库全链条）</h2>
+  <div><button id="replay">重放演示</button> <span id="stages" class="muted">未运行</span></div>
+  <div id="log" style="margin-top:8px">等待运行…</div>
+</div>
+
+<div class="grid" style="margin-top:12px">
+  <div class="card">
+    <h2>语料源</h2>
+    <div id="sources">加载中…</div>
+  </div>
+  <div class="card">
+    <h2>检索</h2>
+    <div><input id="q" size="30" value="In the beginning"> <button id="search">检索</button></div>
+    <div id="hits" style="margin-top:8px">—</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <h2>回溯链浏览器</h2>
+  <div>Proposal：<select id="propSel"><option>加载中…</option></select> <button id="trace">查看回溯链</button></div>
+  <div id="traceOut" style="margin-top:8px">—</div>
+</div>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+async function jget(path) {
+  const r = await fetch(path);
+  const t = await r.text();
+  try { return JSON.parse(t); } catch { return t; }
+}
+async function jpost(path, body) {
+  const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"},
+                               body: JSON.stringify(body || {})});
+  return JSON.parse(await r.text());
+}
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
+
+async function loadTop() {
+  const h = await jget("/api/health");
+  const v = await jget("/api/verify");
+  $("health").innerHTML =
+    `<span class="pill ${v.ok ? "ok" : "warn"}">账本 ${v.ok ? "OK" : "FAIL"}</span>` +
+    `<span class="pill">${v.source_count} 对象 / ${v.unit_count} 单元</span><br>` +
+    `<span class="muted mono">head ${esc(h.ledger_head || "")}</span>` +
+    `<span class="pill ${h.demo_ready ? "ok" : ""}">演示库 ${h.demo_ready ? "就绪" : "未就绪"}</span>`;
+  const m = await jget("/api/metrics");
+  $("metrics").innerHTML =
+    `<span class="pill">残余标记比例 ${esc(m.residue_mark_ratio)} (${m.residue_records}/${m.unit_count})</span>` +
+    `<span class="pill">已批准 fork ${m.approved_fork_count} / 分支操作 ${m.branch_operation_count}</span>` +
+    `<span class="pill">平均置信度 ${esc(m.mean_confidence)}（${m.confidence_samples} 样本·占位）</span><br>` +
+    `<span class="muted">${esc(m.note)}</span>`;
+  const src = await jget("/api/sources");
+  $("sources").innerHTML = "<table><tr><th>标题</th><th>单元</th><th>source_id</th></tr>" +
+    src.slice(0, 12).map(s => `<tr><td>${esc(s.title)}</td><td>${s.unit_count}</td><td class="mono">${esc(String(s.source_id).slice(0, 24))}…</td></tr>`).join("") +
+    `</table><span class="muted">共 ${src.length} 个对象，仅显示前 12 个。</span>`;
+  const props = await jget("/api/proposals");
+  $("propSel").innerHTML = props.map(p => `<option value="${p.proposal_id}">${esc(p.rule_id)}</option>`).join("") || "<option>无</option>";
+}
+
+$("search").onclick = async () => {
+  const q = $("q").value.trim();
+  if (!q) return;
+  const hits = await jget("/api/search?q=" + encodeURIComponent(q) + "&limit=10");
+  if (!Array.isArray(hits)) { $("hits").textContent = JSON.stringify(hits); return; }
+  $("hits").innerHTML = hits.map(h =>
+    `<div><code>[${h.char_range}]</code> <span class="mono muted">${esc(String(h.source_id).slice(0, 20))}…</span><br>${esc(h.text_span.slice(0, 120))}</div>`).join("") || "无命中";
+};
+
+$("trace").onclick = async () => {
+  const id = $("propSel").value;
+  const t = await jget("/api/trace?proposal_id=" + encodeURIComponent(id));
+  if (!t.unbroken) { $("traceOut").textContent = JSON.stringify(t); return; }
+  $("traceOut").innerHTML =
+    `<div><b>Proposal</b> <code>${esc(t.proposal.rule_id)}</code> · confidence ${t.proposal.confidence}（占位）</div>` +
+    t.parent_hypotheses.map(h => `<div>↳ 父假设 <code>${esc(h.model_id)}</code> · signer ${esc(h.signer)}</div>`).join("") +
+    t.source_spans.map(s => `<div>↳ 原文 <code>[${s.char_range}]</code> “${esc(s.text_span.slice(0, 80))}…” · ${s.ledger_entries.length} 条账本记录 · entry <code>${esc(s.ledger_entries[0].entry_hash.slice(0, 24))}…</code></div>`).join("");
+};
+
+const STAGE_LABEL = {reset: "重建", layers: "分层批准", draft: "草稿+提案", graph: "图版本", fork: "Fork保留",
+                     timeline: "时间线", probes: "三探针", backtest: "回测", weights: "权重"};
+function lamp(name, state) { return `<span class="lamp">${state === "ok" ? "🟢" : state === "run" ? "🟡" : "⚪"} ${name}</span>`; }
+function renderStages(done, current) {
+  $("stages").innerHTML = Object.entries(STAGE_LABEL).map(([k, v]) =>
+    lamp(v, done.includes(k) ? "ok" : (k === current ? "run" : "todo"))).join(" ");
+}
+function say(s) { $("log").textContent += s + "\n"; $("log").scrollTop = 1e6; }
+
+$("replay").onclick = async () => {
+  $("replay").disabled = true;
+  $("log").textContent = "";
+  const done = [];
+  try {
+    renderStages(done, "reset");
+    let r = await jpost("/api/demo/reset"); say("reset: " + r.ledger_head.slice(0, 24) + "…"); done.push("reset");
+    renderStages(done, "layers");
+    r = await jpost("/api/demo/layers/approve");
+    if (r.count !== 5) throw new Error("layers count=" + r.count);
+    say(`layers: ${r.count}/5（新增 ${r.newly_approved}，沿用 ${r.already_approved}）`); done.push("layers");
+    renderStages(done, "draft");
+    r = await jpost("/api/demo/draft-and-proposal");
+    const pid = r.proposal.proposal_id; say("proposal: " + pid.slice(0, 24) + "…"); done.push("draft");
+    renderStages(done, "graph");
+    r = await jpost("/api/demo/graph", {proposal_id: pid});
+    const vid = r.approval.graph_version_id; say("graph v" + r.approval.version_number); done.push("graph");
+    renderStages(done, "fork");
+    const snap = await jget("/api/graph/snapshot?version_id=" + encodeURIComponent(vid));
+    r = await jpost("/api/demo/fork-demo", {node_id: snap.nodes[0].node_id});
+    const fid = r.kept.fork_id; say("fork keep-both: " + fid.slice(0, 24) + "…"); done.push("fork");
+    renderStages(done, "timeline");
+    const srcs = await jget("/api/sources");
+    const gen = srcs.find(s => s.title.includes("Genesis"));
+    r = await jpost("/api/demo/timeline/submit", {civilization: "webdemo_polity", label: "演示断裂事件（占位）",
+      year_start: -600, year_end: -590, source_refs: [{source_id: gen.source_id, char_range: [16, 70]}]});
+    await jpost("/api/demo/timeline/decide", {review_id: r.review_id}); say("timeline: approved"); done.push("timeline");
+    renderStages(done, "probes");
+    for (const [probe, ys, ye] of [["lacan_residue", -620, -610], ["deleuze_singularity", -605, -595], ["badiou_event_site", -615, -605]]) {
+      r = await jpost("/api/demo/probe/submit?probe_id=" + probe, {graph_version_id: vid, civilization: "webdemo_polity",
+        signal: "演示信号 " + probe + "（占位）", year_start: ys, year_end: ye,
+        graph_refs: [{ref_type: "node", ref_id: snap.nodes[0].node_id}],
+        source_refs: [{source_id: gen.source_id, char_range: [16, 70]}]});
+      await jpost("/api/demo/probe/decide", {review_id: r.review_id});
+    }
+    say("probes: 3 kept"); done.push("probes");
+    renderStages(done, "backtest");
+    r = await jpost("/api/demo/backtest/run", {graph_version_id: vid, civilization: "webdemo_polity", tolerance_years: 50});
+    const bid = r.backtest_id; say("backtest: weights_updated=" + r.weights_updated); done.push("backtest");
+    renderStages(done, "weights");
+    r = await jpost("/api/demo/weight/submit", {backtest_id: bid,
+      weights: {lacan_residue: 0.5, deleuze_singularity: 0.3, badiou_event_site: 0.2}});
+    r = await jpost("/api/demo/weight/decide", {review_id: r.review_id});
+    say("weights: " + r.weight_set_id.slice(0, 24) + "…"); done.push("weights");
+    renderStages(done, null);
+    say("全部完成（内存库；正式账本未动）。");
+    await loadTop();
+  } catch (e) {
+    say("失败: " + (e && e.message || e));
+    renderStages(done, null);
+  } finally {
+    $("replay").disabled = false;
+  }
+};
+
+loadTop();
+</script>
+</body>
+</html>
