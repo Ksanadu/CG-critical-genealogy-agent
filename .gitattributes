@@ -1,0 +1,8 @@
+# Ledger-critical content: never touch line endings, treat as binary.
+# The corpus ledger addresses these files by exact SHA-256 of their bytes;
+# any CRLF conversion on checkout would invalidate source_ids and hashes.
+data/sources/** -text
+data/objects/** -text
+data/ledger.sqlite3 -text
+data/backups/** -text
+DECISIONS.md -text
