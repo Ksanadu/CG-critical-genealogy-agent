@@ -59,7 +59,8 @@
     签字人 <input id="signer" size="16" value="演示者">
     置信度 <input id="conf" size="5" value="0.5">
     <br>理由（≥20字）：<input id="reason" size="60" value="我已阅读该候选的拟合分与证据跨度，认可其进入已签重构文本，理由如上所述。">
-    <button id="approve">签字批准</button> <span id="apprOut" class="muted">—</span>
+    <br>解读（≥20字，你的话：这段文本说明了什么）：<br><textarea id="interpretation" style="min-height:60px">本段以世系与德行双线确立人物合法性：出身段解决“凭什么是他”，德行段解决“凭什么服他”。此为签字人的解读，不代表机器结论。</textarea>
+    <br><button id="approve">签字批准</button> <span id="apprOut" class="muted">—</span>
   </div>
 </div>
 
@@ -142,8 +143,13 @@ async function showRecon() {
     $("recon").innerHTML = `<span class="muted">${esc(rec.message)}</span>`;
     return;
   }
-  $("recon").innerHTML = rec.approvals.map(a =>
-    `<div class="muted">签字人 ${esc(a.signer)} · 置信度 ${a.confidence} · <code>${esc(a.approved_at)}</code><br>理由：${esc(a.reason)}</div>`).join("") +
+  const readings = rec.readings || rec.approvals.map(a => ({candidate_id: a.candidate_id,
+    interpretation: a.interpretation || "", signer: a.signer, confidence: a.confidence,
+    reason: a.reason, approved_at: a.approved_at}));
+  $("recon").innerHTML =
+    readings.map(r =>
+      `<div class="sent" style="border-color:#1d4ed8"><b>解读 · ${esc(r.candidate_id)}</b>（${esc(r.signer)}，置信度 ${r.confidence}，<code>${esc(r.approved_at)}</code>）<br>${esc(r.interpretation)}<br><span class="muted">理由：${esc(r.reason)}</span></div>`).join("") +
+    `<div class="muted" style="margin:6px 0">以下为逐字引用的原文证据，每句可回溯：</div>` +
     rec.sentences.map(s => `<div class="sent">“${esc(s.text)}”<br><span class="muted"><code>[${s.char_range}]</code> · 候选 ${esc(s.candidate_id)} · ${s.unit_ids.length} 个单元 · 可回溯</span></div>`).join("");
 }
 
@@ -151,6 +157,7 @@ $("approve").onclick = async () => {
   if (!JOB) return;
   const r = await jpost("/api/analyze/approve", {job_id: JOB, candidate_id: $("apprCand").value,
     signer: $("signer").value, reason: $("reason").value,
+    interpretation: $("interpretation").value,
     confidence: parseFloat($("conf").value), human_approved: true});
   if (!r.ok && !r.approval) { $("apprOut").textContent = "失败：" + r.error; return; }
   $("apprOut").textContent = "已签字";

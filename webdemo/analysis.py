@@ -334,6 +334,7 @@ class AnalysisAPI:
         signer = body.get("signer", "")
         reason = body.get("reason", "")
         confidence = body.get("confidence")
+        interpretation = body.get("interpretation", "")
         human_approved = body.get("human_approved", False)
         if not isinstance(job_id, str) or not job_id:
             raise LedgerError("job_id must not be empty")
@@ -348,6 +349,10 @@ class AnalysisAPI:
             or not 0.0 <= float(confidence) <= 1.0
         ):
             raise LedgerError("confidence must be a number in [0, 1]")
+        if not isinstance(interpretation, str) or len(interpretation.strip()) < 20:
+            raise LedgerError("interpretation must contain at least 20 characters of human-authored reading")
+        if len(interpretation.strip()) > 2000:
+            raise LedgerError("interpretation exceeds the 2000-character limit")
         job = self._load_job(job_id)
         candidates = {c.get("candidate_id"): c for c in job["candidates"]}
         if candidate_id not in candidates:
@@ -362,6 +367,7 @@ class AnalysisAPI:
             "action": "approve",
             "signer": signer.strip(),
             "reason": reason.strip(),
+            "interpretation": interpretation.strip(),
             "confidence": float(confidence),
             "human_approved": True,
             "source_id": job["source_id"],
@@ -386,9 +392,20 @@ class AnalysisAPI:
                 "message": "重构文本尚未存在：请先对某条候选签字（POST /api/analyze/approve），签字前只有拟合排序与量化面板。",
                 "candidates_pending": [c.get("candidate_id") for c in job["candidates"]],
             }
+        readings = []
         sentences = []
         for approval in job["approvals"]:
             ledger = job["ledger"]
+            readings.append(
+                {
+                    "candidate_id": approval["candidate_id"],
+                    "interpretation": approval.get("interpretation", ""),
+                    "signer": approval["signer"],
+                    "confidence": approval["confidence"],
+                    "reason": approval["reason"],
+                    "approved_at": approval["approved_at"],
+                }
+            )
             for start, end in approval["spans"]:
                 located = ledger.locate_span(approval["source_id"], start, end).as_dict()
                 sentences.append(
@@ -406,8 +423,9 @@ class AnalysisAPI:
         return {
             "ok": True, "job_id": job_id, "status": "signed",
             "approvals": job["approvals"],
+            "readings": readings,
             "sentences": sentences,
-            "note": "每句断言均可回溯到原文跨度与签字记录；点不进去的句子不会出现在这里。",
+            "note": "上层为签字人的解读（人写的，不是机器编的）；下层为逐字引用的原文证据，每句可回溯；点不进去的句子不会出现在这里。",
         }
 
 
